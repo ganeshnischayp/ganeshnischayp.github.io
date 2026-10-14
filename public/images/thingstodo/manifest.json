@@ -1,0 +1,49 @@
+{
+  "slots": [
+    {
+      "id": "papikondalu",
+      "file": null,
+      "width": 1600,
+      "height": 900,
+      "bytes": 0,
+      "alt": "",
+      "blurDataURL": "",
+      "credit": {
+        "author": "",
+        "licence": "",
+        "sourceUrl": "",
+        "attributionRequired": false
+      }
+    },
+    {
+      "id": "maredumilli",
+      "file": null,
+      "width": 1600,
+      "height": 900,
+      "bytes": 0,
+      "alt": "",
+      "blurDataURL": "",
+      "credit": {
+        "author": "",
+        "licence": "",
+        "sourceUrl": "",
+        "attributionRequired": false
+      }
+    },
+    {
+      "id": "lambasingi",
+      "file": null,
+      "width": 1600,
+      "height": 900,
+      "bytes": 0,
+      "alt": "",
+      "blurDataURL": "",
+      "credit": {
+        "author": "",
+        "licence": "",
+        "sourceUrl": "",
+        "attributionRequired": false
+      }
+    }
+  ]
+}

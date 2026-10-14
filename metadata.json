@@ -1,0 +1,6 @@
+{
+  "name": "Nischay & Yashaswini — Wedding Invitation",
+  "description": "You're warmly invited to celebrate the wedding of Nischay & Yashaswini. November 25 & 26, 2026, Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna. Interactive wedding invitation with personalized RSVP, ceremony timeline, and travel guide.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

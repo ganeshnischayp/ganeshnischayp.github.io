@@ -1,0 +1,101 @@
+<svg viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Radiant Metallic Wedding Gold Gradient -->
+    <linearGradient id="crystalGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF6DF" />
+      <stop offset="18%" stop-color="#FCE291" />
+      <stop offset="45%" stop-color="#D4AF37" />
+      <stop offset="75%" stop-color="#B58726" />
+      <stop offset="100%" stop-color="#FDECB0" />
+    </linearGradient>
+
+    <!-- Warm Golden Shimmer Gradient -->
+    <linearGradient id="crystalGoldShimmer" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#B58726" />
+      <stop offset="30%" stop-color="#D4AF37" />
+      <stop offset="70%" stop-color="#FFF6DB" />
+      <stop offset="100%" stop-color="#E5C06B" />
+    </linearGradient>
+
+    <!-- Single Botanical Branch definition (Top-Left) -->
+    <g id="botanicalBranch">
+      <!-- Main curving stem -->
+      <path d="M 74 136 C 84 96, 114 66, 198 56" 
+            stroke="url(#crystalGold)" stroke-width="2.4" stroke-linecap="round" fill="none" />
+      <!-- Leaf pair 1 (near base) -->
+      <path d="M 78 132 C 60 120, 52 108, 56 102 C 68 108, 76 118, 78 132 Z" fill="url(#crystalGold)" />
+      <path d="M 82 128 C 96 112, 106 98, 104 92 C 94 104, 86 116, 82 128 Z" fill="url(#crystalGold)" />
+      <!-- Leaf pair 2 (middle) -->
+      <path d="M 102 102 C 86 86, 78 74, 82 68 C 94 76, 100 88, 102 102 Z" fill="url(#crystalGold)" />
+      <path d="M 106 98 C 122 84, 134 72, 132 66 C 120 76, 110 86, 106 98 Z" fill="url(#crystalGold)" />
+      <!-- Leaf pair 3 (upper) -->
+      <path d="M 136 78 C 124 58, 120 46, 126 42 C 134 52, 136 64, 136 78 Z" fill="url(#crystalGold)" />
+      <path d="M 140 76 C 160 62, 172 52, 172 46 C 158 54, 146 64, 140 76 Z" fill="url(#crystalGold)" />
+      <!-- Terminal leaf pair (apex) -->
+      <path d="M 174 64 C 176 44, 182 32, 188 34 C 188 46, 182 56, 174 64 Z" fill="url(#crystalGold)" />
+      <path d="M 178 62 C 196 54, 210 56, 212 62 C 198 64, 186 64, 178 62 Z" fill="url(#crystalGold)" />
+      <!-- Floating berry pearls -->
+      <circle cx="92" cy="124" r="3.4" fill="url(#crystalGold)" />
+      <circle cx="104" cy="104" r="3.4" fill="url(#crystalGold)" />
+      <circle cx="134" cy="102" r="3.4" fill="url(#crystalGold)" />
+      <circle cx="172" cy="78" r="3.4" fill="url(#crystalGold)" />
+    </g>
+  </defs>
+
+  <!-- Outer Geometric Octagon -->
+  <polygon points="158,48 354,48 440,128 440,345 354,420 132,420 49,344 49,128" 
+           stroke="url(#crystalGold)" stroke-width="4.5" fill="none" stroke-linejoin="miter" />
+
+  <!-- Outer Geometric Diamond -->
+  <polygon points="248,11 468,234 244,461 21,234" 
+           stroke="url(#crystalGold)" stroke-width="4.5" fill="none" stroke-linejoin="miter" />
+
+  <!-- Top-Left Botanical Sprig -->
+  <use href="#botanicalBranch" />
+
+  <!-- Bottom-Right Botanical Sprig (180 deg rotation) -->
+  <use href="#botanicalBranch" transform="translate(500, 500) rotate(180)" />
+
+  <!-- Central Flourished Monogram -->
+  <g id="monogramNY">
+    <!-- Letter N - Top-left flourish curl -->
+    <path d="M 98 182 C 104 162, 126 154, 146 168 C 160 180, 162 205, 148 226 C 138 214, 128 198, 120 188 C 114 180, 108 178, 104 182 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter N - Main diagonal downstroke -->
+    <path d="M 148 170 C 166 198, 192 242, 216 288 C 212 290, 206 290, 202 288 C 178 244, 154 200, 138 174 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter N - High arched right ascender -->
+    <path d="M 204 286 C 210 248, 218 196, 228 152 C 224 182, 216 235, 206 284 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter N - Grand looping swooping bottom flourish -->
+    <path d="M 152 216 C 124 232, 94 252, 92 278 C 90 306, 118 322, 162 324 C 212 326, 270 314, 318 288 C 268 312, 212 320, 162 318 C 122 316, 96 300, 98 276 C 100 254, 128 236, 152 216 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Central Sweet Open Line Heart (♡) -->
+    <path d="M 255 236 C 251 228, 237 225, 234 240 C 232 254, 244 262, 255 272 C 266 262, 278 254, 276 240 C 273 225, 259 228, 255 236 Z" 
+          stroke="url(#crystalGold)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+    <!-- Letter Y - Left upper arm flourish -->
+    <path d="M 256 194 C 268 184, 288 194, 304 218 L 312 248 C 304 238, 292 218, 278 206 C 268 198, 260 196, 256 194 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter Y - Right upper swirl & main diagonal stroke -->
+    <path d="M 408 174 C 392 162, 368 184, 354 212 L 314 268 C 318 266, 324 266, 328 268 L 362 216 C 374 194, 394 178, 408 174 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter Y - Descender loop -->
+    <path d="M 314 268 C 298 300, 278 338, 244 362 C 238 366, 236 360, 240 352 C 265 324, 286 288, 304 252 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter Y - Terminal hook at bottom -->
+    <path d="M 244 362 C 248 354, 254 340, 258 332 C 256 342, 250 356, 244 362 Z" 
+          fill="url(#crystalGold)" />
+
+    <!-- Letter Y - Horizontal cross-flourish -->
+    <path d="M 270 276 C 315 272, 365 270, 396 274 C 362 278, 312 280, 270 276 Z" 
+          fill="url(#crystalGold)" />
+  </g>
+</svg>
