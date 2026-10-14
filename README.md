@@ -7,7 +7,7 @@ Interactive royal Indian wedding invitation website for the auspicious wedding o
 ## 🚀 Quick Start Guide
 
 ### 1. Prerequisites
-Ensure you have **Node.js 18+** installed:
+Ensure you have **Node.js 24+** installed:
 ```bash
 node -v
 npm -v
