@@ -1,6 +1,5 @@
-# Supriya & Satwick — Wedding Invitation Web App
+# Nischay & Yashaswini — Wedding Invitation Web App
 
-A production-ready clone of the interactive royal Indian wedding invitation website ([su-and-sa.vercel.app](https://su-and-sa.vercel.app)), built with **React**, **Vite**, **TypeScript**, **Tailwind CSS v4**, and **Motion**.
 
 ---
 
