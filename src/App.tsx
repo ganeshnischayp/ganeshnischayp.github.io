@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ArrowLeft, Plus, Download } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   decodeInvite,
@@ -247,17 +247,6 @@ export default function App() {
                     </button>
                   </div>
 
-                  {/* Download Source Code ZIP */}
-                  <a
-                    href="/wedding-invitation-source.zip"
-                    download="wedding-invitation-source.zip"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#c9a776]/50 bg-[#FDFBF7] text-[#6B2D2A] text-xs font-sans uppercase tracking-wider font-semibold shadow-xs hover:bg-[#c9a776]/20 transition-all cursor-pointer"
-                    title="Download complete project source files as .ZIP"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Download ZIP</span>
-                  </a>
-
                   {/* Create Custom Invite Link */}
                   <button
                     type="button"
@@ -272,7 +261,7 @@ export default function App() {
             </header>
 
             {/* Main Content Area */}
-            <main className="w-full max-w-[63.46rem] mx-auto pt-6 md:pt-10 px-2 sm:px-4 md:px-8 pb-24 md:pb-28">
+            <main className="w-full max-w-[63.46rem] mx-auto pt-5 md:pt-10 px-3.5 sm:px-6 md:px-8 pb-24 md:pb-28">
               <InvitationCard
                 guestName={guestName}
                 guestToken={rawToken}

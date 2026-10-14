@@ -1,36 +1,31 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
+import { Clock, Calendar } from "lucide-react";
 import confetti from "canvas-confetti";
-import { Sparkles, Calendar, RotateCcw, Clock } from "lucide-react";
 import { Monogram } from "./Monogram";
 
 interface ScratchDateCardProps {
-  lang?: "en" | "kn" | "te";
-  onReveal?: () => void;
+  onRevealed?: () => void;
+  lang?: "kn" | "en" | "te";
 }
 
-export function ScratchDateCard({
-  lang = "en",
-  onReveal,
-}: ScratchDateCardProps) {
+export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProps) {
+  const isKn = lang === "kn" || lang === "te";
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
-
   const [isRevealed, setIsRevealed] = useState(false);
-  const [scratchPercent, setScratchPercent] = useState(0);
-  const [isScratching, setIsScratching] = useState(false);
-  const [hasSparkled, setHasSparkled] = useState(false);
+  const isDrawingRef = useRef(false);
+  const lastPointRef = useRef<{ x: number; y: number } | null>(null);
+  const scratchedPixelsRef = useRef<number>(0);
 
-  const isKn = lang === "kn";
+  // Reception date target: 25 Nov 2026, 7:00 PM IST
+  const targetTime = 1795613400000;
 
-  // Target: Reception starts Nov 25, 2026 at 7:00 PM IST
-  const targetTime = new Date("2026-11-25T19:00:00+05:30").getTime();
-  const [timeLeft, setTimeLeft] = useState<{
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-  }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
   useEffect(() => {
     const updateTime = () => {
@@ -48,49 +43,67 @@ export function ScratchDateCard({
     return () => clearInterval(timer);
   }, [targetTime]);
 
-  // Render clean, smooth, muted dull-gold scratch foil without patterns
+  // Render a shiny, lustrous golden foil scratch surface
   const initCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const width = canvas.width;
-    const height = canvas.height;
+    // Dynamically match container dimensions so foil fits any screen seamlessly
+    const rect = container.getBoundingClientRect();
+    const width = Math.max(300, Math.round(rect.width || canvas.offsetWidth || 345));
+    const height = Math.max(240, Math.round(rect.height || canvas.offsetHeight || 250));
+
+    canvas.width = width;
+    canvas.height = height;
 
     ctx.globalCompositeOperation = "source-over";
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Smooth, Muted Antique Champagne Gold Gradient (No Patterns, Clean Matte Surface)
+    // 1. Radiant Metallic Gold Foil Gradient
     const goldGrad = ctx.createLinearGradient(0, 0, width, height);
-    goldGrad.addColorStop(0, "#8f7c63");
-    goldGrad.addColorStop(0.25, "#baa88e");
-    goldGrad.addColorStop(0.5, "#cfc0a8");
-    goldGrad.addColorStop(0.75, "#baa88e");
-    goldGrad.addColorStop(1, "#7d6b54");
+    goldGrad.addColorStop(0, "#C99E3A");
+    goldGrad.addColorStop(0.18, "#F7DA7C");
+    goldGrad.addColorStop(0.35, "#FFF6DF"); // High-gloss specular shimmer
+    goldGrad.addColorStop(0.5, "#E5BF67");  // Warm royal wedding gold
+    goldGrad.addColorStop(0.68, "#B38022"); // Deep rich gold
+    goldGrad.addColorStop(0.82, "#FCE8A2"); // Secondary bright golden gleam
+    goldGrad.addColorStop(1, "#9E6F18");
 
     ctx.fillStyle = goldGrad;
     ctx.fillRect(0, 0, width, height);
 
-    // 2. Outer Refined Matte Border Frame (Pattern-free, smooth surface)
-    ctx.strokeStyle = "rgba(74, 31, 29, 0.35)";
+    // 2. Translucent Diagonal Shiny Light Sheen Sweep
+    const sheenGrad = ctx.createLinearGradient(0, 0, width, height * 0.85);
+    sheenGrad.addColorStop(0, "rgba(255, 255, 255, 0)");
+    sheenGrad.addColorStop(0.36, "rgba(255, 255, 255, 0.06)");
+    sheenGrad.addColorStop(0.48, "rgba(255, 255, 255, 0.38)"); // Bright shiny luster beam!
+    sheenGrad.addColorStop(0.6, "rgba(255, 255, 255, 0.06)");
+    sheenGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+    ctx.fillStyle = sheenGrad;
+    ctx.fillRect(0, 0, width, height);
+
+    // 3. Elegant Outer Golden Borders with Depth
+    ctx.strokeStyle = "rgba(110, 75, 18, 0.45)";
     ctx.lineWidth = 2;
     ctx.strokeRect(9, 9, width - 18, height - 18);
 
-    ctx.strokeStyle = "rgba(235, 226, 212, 0.75)";
+    ctx.strokeStyle = "rgba(255, 250, 235, 0.85)";
     ctx.lineWidth = 1;
     ctx.strokeRect(12, 12, width - 24, height - 24);
 
     // Subtle inner dashed stitch border
-    ctx.strokeStyle = "rgba(74, 31, 29, 0.25)";
+    ctx.strokeStyle = "rgba(120, 80, 20, 0.35)";
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 3]);
     ctx.strokeRect(16, 16, width - 32, height - 32);
     ctx.setLineDash([]);
 
-    // Corner decorative diamonds
+    // Corner decorative diamonds with center pearl
     const drawCornerDiamond = (cx: number, cy: number, s: number) => {
-      ctx.fillStyle = "#5a3a34";
+      ctx.fillStyle = "#7A4E15";
       ctx.beginPath();
       ctx.moveTo(cx, cy - s);
       ctx.lineTo(cx + s, cy);
@@ -99,9 +112,9 @@ export function ScratchDateCard({
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = "#e8ded0";
+      ctx.fillStyle = "#FFF7DF";
       ctx.beginPath();
-      ctx.arc(cx, cy, 1, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 1.2, 0, Math.PI * 2);
       ctx.fill();
     };
     drawCornerDiamond(12, 12, 4);
@@ -109,29 +122,40 @@ export function ScratchDateCard({
     drawCornerDiamond(12, height - 12, 4);
     drawCornerDiamond(width - 12, height - 12, 4);
 
-    // 3. Central Plaque for "SCRATCH HERE" with Dulled, Muted Antique Color
+    // 4. Little decorative stars on foil for shine
+    const drawSparkle = (sx: number, sy: number, r: number) => {
+      ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    drawSparkle(cxSparkle(width, 0.22), cySparkle(height, 0.26), 2);
+    drawSparkle(cxSparkle(width, 0.78), cySparkle(height, 0.76), 2);
+
+    // 5. Central Plaque for "SCRATCH HERE" with Radiant Shimmering Gold
     const cx = width / 2;
     const cy = height / 2;
-    const plaqueW = 196;
-    const plaqueH = 46;
-    const plaqueR = 23;
+    const plaqueW = Math.min(210, width - 60);
+    const plaqueH = 48;
+    const plaqueR = 24;
 
-    // Plaque soft shadow
+    // Plaque soft golden shadow
     ctx.save();
-    ctx.shadowColor = "rgba(74, 31, 29, 0.25)";
-    ctx.shadowBlur = 6;
-    ctx.shadowOffsetY = 2;
+    ctx.shadowColor = "rgba(100, 65, 15, 0.35)";
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetY = 3;
 
-    // Muted champagne-cream plaque fill
+    // Shimmering bright gold plaque fill
     const plaqueGrad = ctx.createLinearGradient(
       cx - plaqueW / 2,
       cy - plaqueH / 2,
       cx + plaqueW / 2,
       cy + plaqueH / 2
     );
-    plaqueGrad.addColorStop(0, "#ece4d7");
-    plaqueGrad.addColorStop(0.5, "#e2d7c7");
-    plaqueGrad.addColorStop(1, "#d6c7b3");
+    plaqueGrad.addColorStop(0, "#FFF9E6");
+    plaqueGrad.addColorStop(0.3, "#FCE7A2");
+    plaqueGrad.addColorStop(0.7, "#E5BF5E");
+    plaqueGrad.addColorStop(1, "#FFF4D2");
 
     ctx.beginPath();
     ctx.roundRect(cx - plaqueW / 2, cy - plaqueH / 2, plaqueW, plaqueH, plaqueR);
@@ -139,12 +163,12 @@ export function ScratchDateCard({
     ctx.fill();
     ctx.restore();
 
-    // Plaque muted rim
-    ctx.strokeStyle = "#9c876e";
-    ctx.lineWidth = 1.5;
+    // Plaque golden rim
+    ctx.strokeStyle = "#C49226";
+    ctx.lineWidth = 1.8;
     ctx.stroke();
 
-    // Inner subtle stitch
+    // Inner bright stitch
     ctx.beginPath();
     ctx.roundRect(
       cx - (plaqueW - 6) / 2,
@@ -153,23 +177,37 @@ export function ScratchDateCard({
       plaqueH - 6,
       plaqueR - 3
     );
-    ctx.strokeStyle = "rgba(156, 135, 110, 0.45)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 2.5]);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // 4. "SCRATCH HERE" Text - Clean, bold, muted and legible
+    // 6. "SCRATCH HERE" Text - Bold, rich, with golden highlights
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = "bold 14px -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif";
-    ctx.fillStyle = "#4a2e2b";
-    ctx.fillText("SCRATCH HERE", cx, cy);
+    ctx.font = "bold 13.5px -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif";
+    ctx.fillStyle = "#54211D"; // Royal wedding wine
+    ctx.fillText("✨  SCRATCH HERE  ✨", cx, cy);
   }, []);
+
+  function cxSparkle(w: number, ratio: number) {
+    return Math.round(w * ratio);
+  }
+  function cySparkle(h: number, ratio: number) {
+    return Math.round(h * ratio);
+  }
 
   useEffect(() => {
     initCanvas();
-  }, [initCanvas]);
+    const handleResize = () => {
+      if (!isRevealed) {
+        initCanvas();
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [initCanvas, isRevealed]);
 
   // Scratch action handler with continuous brush path
   const scratchAt = (clientX: number, clientY: number) => {
@@ -183,123 +221,152 @@ export function ScratchDateCard({
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
 
-    const currentX = (clientX - rect.left) * scaleX;
-    const currentY = (clientY - rect.top) * scaleY;
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top) * scaleY;
 
     ctx.globalCompositeOperation = "destination-out";
 
-    ctx.beginPath();
+    ctx.save();
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = "rgba(0,0,0,1)";
+
     if (lastPointRef.current) {
-      // Draw smooth continuous stroke connecting last point to current point
-      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
-      ctx.lineTo(currentX, currentY);
-      ctx.lineWidth = 42;
+      ctx.lineWidth = 38;
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
+      ctx.beginPath();
+      ctx.moveTo(lastPointRef.current.x, lastPointRef.current.y);
+      ctx.lineTo(x, y);
       ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, Math.PI * 2);
+      ctx.fill();
     }
+    ctx.restore();
 
-    // Fill circle at current touch position
-    ctx.beginPath();
-    ctx.arc(currentX, currentY, 22, 0, Math.PI * 2);
-    ctx.fill();
+    lastPointRef.current = { x, y };
 
-    lastPointRef.current = { x: currentX, y: currentY };
-
-    checkPercentage();
+    // Check scratch progress
+    scratchedPixelsRef.current += 1;
+    if (scratchedPixelsRef.current % 8 === 0) {
+      checkRevealProgress();
+    }
   };
 
-  const checkPercentage = () => {
+  const checkRevealProgress = () => {
     const canvas = canvasRef.current;
-    if (!canvas || isRevealed) return;
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     try {
-      const width = canvas.width;
-      const height = canvas.height;
-      const imageData = ctx.getImageData(0, 0, width, height);
-      const data = imageData.data;
-      let transparentCount = 0;
-      const sampleStep = 16;
+      const step = 8;
+      const w = canvas.width;
+      const h = canvas.height;
+      const imgData = ctx.getImageData(0, 0, w, h);
+      const data = imgData.data;
 
-      for (let i = 3; i < data.length; i += sampleStep * 4) {
-        if (data[i] < 60) {
-          transparentCount++;
+      let transparentCount = 0;
+      let totalSampled = 0;
+
+      for (let y = 0; y < h; y += step) {
+        for (let x = 0; x < w; x += step) {
+          totalSampled++;
+          const idx = (y * w + x) * 4;
+          if (data[idx + 3] < 80) {
+            transparentCount++;
+          }
         }
       }
 
-      const totalSampled = data.length / (sampleStep * 4);
-      const percent = Math.min(100, Math.round((transparentCount / totalSampled) * 100));
-      setScratchPercent(percent);
-
-      if (percent >= 38 && !isRevealed) {
-        triggerCompleteReveal();
+      const ratio = transparentCount / totalSampled;
+      if (ratio > 0.38 && !isRevealed) {
+        triggerReveal();
       }
+    } catch {
+      // Fallback
+    }
+  };
+
+  const triggerReveal = () => {
+    setIsRevealed(true);
+    if (onRevealed) onRevealed();
+
+    try {
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.65 },
+        colors: ["#d4af37", "#f5d77f", "#6b2d2a", "#fcf8f0"],
+        disableForReducedMotion: true,
+      });
+    } catch {
+      // Confetti fallback
+    }
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (isRevealed) return;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    isDrawingRef.current = true;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const scaleX = e.currentTarget.width / rect.width;
+    const scaleY = e.currentTarget.height / rect.height;
+    lastPointRef.current = {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+    scratchAt(e.clientX, e.clientY);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (!isDrawingRef.current || isRevealed) return;
+    scratchAt(e.clientX, e.clientY);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    isDrawingRef.current = false;
+    lastPointRef.current = null;
+    try {
+      (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     } catch {
       // ignore
     }
   };
 
-  const triggerCompleteReveal = () => {
-    setIsRevealed(true);
-    setScratchPercent(100);
-    lastPointRef.current = null;
-    if (!hasSparkled) {
-      setHasSparkled(true);
-      confetti({
-        particleCount: 50,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ["#c9a776", "#6B2D2A", "#dfbc7c", "#ffffff", "#b89758"],
-      });
-      if (onReveal) onReveal();
-    }
+  const handleRevealAll = () => {
+    triggerReveal();
   };
 
-  const handlePointerDown = (e: React.PointerEvent) => {
-    setIsScratching(true);
-    lastPointRef.current = null;
-    scratchAt(e.clientX, e.clientY);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isScratching) return;
-    scratchAt(e.clientX, e.clientY);
-  };
-
-  const handlePointerUp = () => {
-    setIsScratching(false);
-    lastPointRef.current = null;
-  };
-
-  const resetScratch = () => {
+  const handleReset = () => {
     setIsRevealed(false);
-    setScratchPercent(0);
-    setHasSparkled(false);
+    scratchedPixelsRef.current = 0;
     lastPointRef.current = null;
-    initCanvas();
+    setTimeout(() => {
+      initCanvas();
+    }, 50);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center my-8">
+    <div className="flex flex-col items-center justify-center my-6 sm:my-8 w-full">
       {/* Decorative Title Banner */}
       <div className="flex items-center gap-2 mb-3">
-        <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#c9b48c]" />
-        <span className="font-sans uppercase tracking-[0.24em] text-[10px] text-[#9c825a] font-bold flex items-center gap-1.5">
+        <span className="h-px w-8 bg-gradient-to-r from-transparent to-[#c9a776]" />
+        <span className="font-sans uppercase tracking-[0.22em] text-[10px] sm:text-[11px] text-[#9c825a] font-bold flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5 text-[#8a6a33]" />
           {isKn ? "ದಿನಾಂಕ ಮತ್ತು ಕ್ಷಣಗಣನೆ" : "Wedding Date & Countdown"}
         </span>
-        <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#c9b48c]" />
+        <span className="h-px w-8 bg-gradient-to-l from-transparent to-[#c9a776]" />
       </div>
 
-      {/* LUXURY SCRATCH CARD PASS CONTAINER - Dulled, elegant champagne gold */}
+      {/* LUXURY SCRATCH CARD PASS CONTAINER - Fully responsive and height-safe */}
       <div
         ref={containerRef}
-        className="relative w-full max-w-[340px] sm:max-w-[410px] h-[210px] sm:h-[225px] rounded-2xl shadow-[0_12px_32px_-8px_rgba(74,31,29,0.2)] border-2 border-[#c9b48c] p-1.5 bg-[#FAF3E8] select-none touch-none overflow-hidden"
+        className="relative w-full max-w-[345px] sm:max-w-[420px] min-h-[250px] sm:min-h-[260px] rounded-2xl shadow-[0_12px_32px_-8px_rgba(74,31,29,0.22)] border-2 border-[#d4af37] p-1.5 bg-[#FAF3E8] select-none touch-none overflow-hidden"
       >
         {/* INNER REVEALED CONTENT UNDERNEATH */}
-        <div className="relative w-full h-full rounded-xl bg-gradient-to-b from-[#FFFDF9] via-[#FCF8F0] to-[#F5ECE0] border border-[#c9b48c]/50 p-3 sm:p-3.5 flex flex-col justify-between text-center overflow-hidden">
+        <div className="relative w-full h-full min-h-[238px] sm:min-h-[248px] rounded-xl bg-gradient-to-b from-[#FFFDF9] via-[#FCF8F0] to-[#F5ECE0] border border-[#d4af37]/40 p-3 sm:p-3.5 flex flex-col justify-between text-center overflow-hidden">
           {/* Subtle watermark monogram */}
           <div
             aria-hidden="true"
@@ -311,24 +378,22 @@ export function ScratchDateCard({
             />
           </div>
 
-          {/* Top Row: Auspicious Date Announcement (NO green tag) */}
-          <div className="z-10 flex items-center justify-between border-b border-[#c9a776]/25 pb-1.5">
-            <div className="text-left w-full">
-              <div className="flex items-baseline justify-between">
-                <p
-                  className="text-base sm:text-lg font-bold text-[#6B2D2A] leading-tight"
-                  style={{ fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)" }}
-                >
-                  {isKn ? "2026 ನವೆಂಬರ್ 25 & 26" : "25 & 26 November 2026"}
-                </p>
-                <span className="font-sans text-[10px] font-bold text-[#8a6a33] uppercase tracking-wider">
-                  Channarayapatna
-                </span>
-              </div>
-              <p className="text-[10px] text-muted-foreground font-sans font-medium uppercase tracking-wider mt-0.5">
-                {isKn ? "ಬುಧವಾರ & ಗುರುವಾರ" : "Wednesday & Thursday"}
+          {/* Top Row: Auspicious Date Announcement */}
+          <div className="z-10 border-b border-[#c9a776]/25 pb-1.5">
+            <div className="flex items-baseline justify-between">
+              <p
+                className="text-base sm:text-lg font-bold text-[#6B2D2A] leading-tight"
+                style={{ fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)" }}
+              >
+                {isKn ? "2026 ನವೆಂಬರ್ 25 & 26" : "25 & 26 November 2026"}
               </p>
+              <span className="font-sans text-[10px] font-bold text-[#8a6a33] uppercase tracking-wider">
+                Channarayapatna
+              </span>
             </div>
+            <p className="text-[10px] text-muted-foreground font-sans font-medium uppercase tracking-wider text-left mt-0.5">
+              {isKn ? "ಬುಧವಾರ & ಗುರುವಾರ" : "Wednesday & Thursday"}
+            </p>
           </div>
 
           {/* Middle Row: Two Events Summary Cards */}
@@ -351,9 +416,9 @@ export function ScratchDateCard({
             </div>
           </div>
 
-          {/* Bottom Row: Live Countdown Tiles */}
-          <div className="w-full z-10 pt-0.5">
-            <div className="flex items-center justify-center text-[9px] font-sans uppercase tracking-widest text-[#8a6a33] font-semibold mb-1">
+          {/* Bottom Row: Live Countdown Tiles (Guaranteed full visibility, never cut off) */}
+          <div className="w-full z-10 pt-1">
+            <div className="flex items-center justify-center text-[9px] sm:text-[10px] font-sans uppercase tracking-widest text-[#8a6a33] font-semibold mb-1">
               <span className="flex items-center gap-1">
                 <Clock className="w-2.5 h-2.5 text-[#8a6a33]" />
                 {isKn ? "ಉಳಿದಿರುವ ಸಮಯ" : "Countdown to Celebration"}
@@ -369,7 +434,7 @@ export function ScratchDateCard({
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex flex-col items-center justify-center py-1 rounded-md bg-[#6B2D2A] text-white shadow-2xs border border-[#c9b48c]/30"
+                  className="flex flex-col items-center justify-center py-1 sm:py-1.5 rounded-md bg-[#6B2D2A] text-white shadow-2xs border border-[#c9b48c]/30"
                 >
                   <span className="font-sans font-bold text-xs sm:text-sm tabular-nums leading-none text-[#FAF3E8]">
                     {String(item.val).padStart(2, "0")}
@@ -383,11 +448,9 @@ export function ScratchDateCard({
           </div>
         </div>
 
-        {/* METALLIC DULL-GOLD FOIL SCRATCH CANVAS OVERLAY (No pattern, clean matte) */}
+        {/* METALLIC SHINY-GOLD FOIL SCRATCH CANVAS OVERLAY */}
         <canvas
           ref={canvasRef}
-          width={410}
-          height={225}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -399,32 +462,24 @@ export function ScratchDateCard({
         />
       </div>
 
-      {/* ACTION & HELPER BUTTONS - Dulled, tasteful colors */}
-      <div className="mt-3 flex items-center gap-3">
+      {/* Helper Action Link Below Scratch Card */}
+      <div className="mt-2 text-center flex items-center justify-center gap-3">
         {!isRevealed ? (
           <button
             type="button"
-            onClick={triggerCompleteReveal}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#e8decb] hover:bg-[#dfd3bc] border border-[#c2ae91] text-[#4a2e2b] text-xs font-sans uppercase tracking-wider font-bold transition-all shadow-2xs cursor-pointer hover:scale-105 active:scale-95"
+            onClick={handleRevealAll}
+            className="text-[11px] font-sans font-semibold text-[#8a6a33] hover:text-[#6B2D2A] uppercase tracking-wider underline underline-offset-4 cursor-pointer transition-colors"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#8a6a33]" />
-            <span>Tap to Reveal Date</span>
+            {isKn ? "ದಿನಾಂಕ ತೋರಿಸಿ" : "Tap to reveal directly"}
           </button>
         ) : (
           <button
             type="button"
-            onClick={resetScratch}
-            className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/80 hover:bg-white border border-[#c9b48c]/50 text-[#6B2D2A] text-[11px] font-sans tracking-wide transition-all shadow-2xs cursor-pointer hover:scale-105 active:scale-95"
+            onClick={handleReset}
+            className="text-[11px] font-sans font-semibold text-[#8a6a33] hover:text-[#6B2D2A] uppercase tracking-wider underline underline-offset-4 cursor-pointer transition-colors"
           >
-            <RotateCcw className="w-2.5 h-2.5" />
-            <span>Scratch Again</span>
+            {isKn ? "ಮತ್ತೆ ಗೀಚಿ" : "Scratch again"}
           </button>
-        )}
-
-        {!isRevealed && scratchPercent > 0 && (
-          <span className="text-[11px] font-sans text-muted-foreground tabular-nums">
-            {scratchPercent}% scratched
-          </span>
         )}
       </div>
     </div>

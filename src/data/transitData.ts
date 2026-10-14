@@ -43,19 +43,23 @@ export const TRAIN_INFO = [
 export const ROAD_INFO = [
   {
     label: "From Bengaluru",
-    value: "~145 km · 2.5 hours via NH 75 (Nelamangala – Kunigal – Bellur Cross – Channarayapatna)",
-  },
-  {
-    label: "From Mysuru",
-    value: "~85 km · 1.5–2 hours via KR Pete (SH 7)",
+    highway: "NH 75",
+    value: "~145 km · 2.5 hours via NH 75 Expressway",
   },
   {
     label: "From Hassan",
-    value: "~38 km · 35 minutes via NH 75 four-lane expressway",
+    highway: "NH 75",
+    value: "~38 km · 35 mins via NH 75 Expressway",
+  },
+  {
+    label: "From Mysuru",
+    highway: "SH 7",
+    value: "~85 km · 1.5–2 hours via SH 7 (KR Pete)",
   },
   {
     label: "From Mangaluru",
-    value: "~210 km · 4.5 hours via Sakleshpur & Shiradi Ghat (NH 75)",
+    highway: "NH 75",
+    value: "~210 km · 4.5 hours via NH 75 (Shiradi Ghat)",
   },
 ];
 

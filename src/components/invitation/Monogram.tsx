@@ -23,12 +23,16 @@ export function Monogram({
   bright = false,
   src,
 }: MonogramProps) {
+  const BASE = import.meta.env.BASE_URL?.endsWith("/")
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL || ""}/`;
+
   // Use NY-logo-golden.png if requested or if variant/color is golden
   const imageSrc =
     src ||
     (variant === "golden" || color === "gold" || color === "golden"
-      ? "/images/logo/NY-logo-golden.png"
-      : "/images/logo/NY-logo.png");
+      ? `${BASE}images/logo/NY-logo-golden.png`
+      : `${BASE}images/logo/NY-logo.png`);
 
   return (
     <span

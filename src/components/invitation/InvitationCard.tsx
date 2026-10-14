@@ -111,7 +111,7 @@ export function InvitationCard({
   };
 
   return (
-    <div className="relative w-full bg-[#F8EEDD] rounded-none p-6 sm:p-10 md:p-16 shadow-2xl border border-black/10 flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative w-full bg-[#F8EEDD] rounded-none px-5 py-7 sm:px-10 sm:py-12 md:p-16 shadow-2xl border border-black/10 flex flex-col items-center justify-center overflow-hidden">
       {/* Paper background texture */}
       <div
         aria-hidden="true"
@@ -127,11 +127,11 @@ export function InvitationCard({
       {/* Decorative Golden Outer and Inner Border Frames */}
       <div
         aria-hidden="true"
-        className="absolute inset-3 md:inset-5 pointer-events-none border border-[#c9a776]/50"
+        className="absolute inset-2 sm:inset-3 md:inset-5 pointer-events-none border border-[#c9a776]/50"
       />
       <div
         aria-hidden="true"
-        className="absolute inset-[14px] md:inset-[22px] pointer-events-none border border-[#c9a776]/30"
+        className="absolute inset-[7px] sm:inset-[12px] md:inset-[22px] pointer-events-none border border-[#c9a776]/30"
       />
 
       {/* Swaying Watercolor Floral Accents */}
@@ -188,39 +188,41 @@ export function InvitationCard({
           </p>
 
           {/* Monogram Crest - Clean, Elegant & Crisp Golden NY Logo */}
-          <div className="flex justify-center my-3.5">
+          <div className="flex justify-center mt-2 mb-0.5 sm:my-3.5">
             <span className="relative inline-block transition-transform duration-300 hover:scale-105">
               <Monogram
                 variant="golden"
-                style={{ height: 76, width: 76 }}
+                style={{ height: 68, width: 68 }}
+                className="sm:w-[76px] sm:h-[76px]"
               />
             </span>
           </div>
 
-          {/* Couple's Names Calligraphy with Golden Wave Hover Effect */}
-          <div className="relative inline-block my-1 group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
-            {/* Soft warm ambient gold aura on hover */}
+          {/* Couple's Names Calligraphy with Golden Light Effect (Active on Mobile & Desktop) */}
+          <div className="relative inline-block mt-0 mb-2 sm:my-3 max-w-full group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
+            {/* Soft warm ambient gold aura - always active on mobile, extra bright on hover */}
             <div
               aria-hidden="true"
-              className="absolute -inset-4 rounded-3xl bg-gradient-to-r from-transparent via-[#c9a776]/20 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+              className="absolute -inset-3 sm:-inset-6 rounded-3xl bg-gradient-to-r from-transparent via-[#c9a776]/30 to-transparent blur-xl opacity-80 sm:opacity-90 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
             />
 
-            {/* Shimmering hover sparkles */}
+            {/* Shimmering golden sparkles visible on phone and desktop */}
             <Sparkles
-              className="w-5 h-5 text-amber-500 absolute -top-1 -right-6 md:-right-8 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:rotate-12 group-hover:scale-110 pointer-events-none"
+              className="w-4 h-4 sm:w-6 sm:h-6 text-amber-500 absolute -top-2 -right-3 sm:-right-8 opacity-85 sm:opacity-95 group-hover:opacity-100 transition-all duration-300 transform group-hover:rotate-12 group-hover:scale-110 pointer-events-none"
               aria-hidden="true"
             />
             <Sparkles
-              className="w-4 h-4 text-amber-500 absolute -bottom-1 -left-5 md:-left-7 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:-rotate-12 group-hover:scale-110 pointer-events-none"
+              className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-amber-500 absolute -bottom-1 -left-3 sm:-left-7 opacity-80 sm:opacity-90 group-hover:opacity-100 transition-all duration-300 transform group-hover:-rotate-12 group-hover:scale-110 pointer-events-none"
               aria-hidden="true"
             />
 
-            <div className="space-y-1 w-full flex flex-col items-center">
+            <div className="space-y-1 w-full flex flex-col items-center max-w-full overflow-hidden">
               <h1
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-wide md:tracking-wider leading-tight py-1 golden-wave-hover select-none whitespace-nowrap"
+                className="font-serif font-medium tracking-normal sm:tracking-wide leading-tight py-1.5 golden-wave-hover select-none whitespace-nowrap text-center max-w-full"
                 style={{
                   fontFamily: "var(--font-serif)",
-                  filter: "drop-shadow(0 1px 1px rgba(74,31,29,0.15))",
+                  fontSize: "clamp(1.95rem, 7.4vw, 4.25rem)",
+                  filter: "drop-shadow(0 1px 1px rgba(74,31,29,0.18)) drop-shadow(0 0 12px rgba(201,167,118,0.45))",
                 }}
                 title="Nischay & Yashaswini"
               >
@@ -229,9 +231,10 @@ export function InvitationCard({
 
               {isKn ? (
                 <p
-                  className="text-3xl md:text-5xl leading-[1.6] font-semibold golden-wave-hover"
+                  className="leading-[1.5] font-semibold golden-wave-hover"
                   style={{
                     fontFamily: "var(--font-kannada-display)",
+                    fontSize: "clamp(1.85rem, 7vw, 3.75rem)",
                   }}
                 >
                   {coupleKn}
@@ -367,12 +370,22 @@ export function InvitationCard({
                 {isKn ? VENUE_NAME_KN : VENUE_NAME}
               </p>
               <p
-                className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-sm"
+                className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-md"
                 style={{
                   fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
                 }}
               >
-                {isKn ? VENUE_ADDRESS_KN : VENUE_ADDRESS}
+                {isKn ? (
+                  <>
+                    ಬಿ.ಎಂ. ರಸ್ತೆ, ಚನ್ನರಾಯಪಟ್ಟಣ, ಹಾಸನ ಜಿಲ್ಲೆ,{" "}
+                    <span className="whitespace-nowrap">ಕರ್ನಾಟಕ 573116</span>
+                  </>
+                ) : (
+                  <>
+                    B.M. Road, Channarayapatna, Hassan District,{" "}
+                    <span className="whitespace-nowrap">Karnataka 573116</span>
+                  </>
+                )}
               </p>
 
               {/* View on Map Link */}

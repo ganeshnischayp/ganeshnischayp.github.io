@@ -169,12 +169,15 @@ export function TravelAndExplore() {
             >
               <dl className="divide-y divide-[#c9a776]/20">
                 {ROAD_INFO.map((item) => (
-                  <div key={item.label} className="py-3 first:pt-0">
-                    <dt className="font-sans uppercase tracking-[0.2em] text-[10px] text-[#b8924f] mb-1 font-semibold">
+                  <div
+                    key={item.label}
+                    className="py-3 first:pt-0 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4"
+                  >
+                    <dt className="font-sans uppercase tracking-[0.2em] text-[11px] text-[#b8924f] font-semibold whitespace-nowrap">
                       {item.label}
                     </dt>
                     <dd
-                      className="text-base sm:text-lg text-foreground/85 leading-snug font-medium"
+                      className="text-base sm:text-lg text-foreground/85 leading-snug font-medium sm:text-right whitespace-normal sm:whitespace-nowrap"
                       style={{ fontFamily: "var(--font-serif)" }}
                     >
                       {item.value}
@@ -350,7 +353,10 @@ export function TravelAndExplore() {
             >
               {VENUE_NAME}
             </p>
-            <p className="text-xs text-muted-foreground">{VENUE_ADDRESS}</p>
+            <p className="text-xs text-muted-foreground">
+              B.M. Road, Channarayapatna, Hassan District,{" "}
+              <span className="whitespace-nowrap">Karnataka 573116</span>
+            </p>
           </div>
           <a
             href={VENUE_MAPS_URL}
