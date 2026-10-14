@@ -215,16 +215,18 @@ export function InvitationCard({
               aria-hidden="true"
             />
 
-            <div className="space-y-1">
+            <div className="space-y-1 w-full flex flex-col items-center">
               <h1
-                className="text-5xl md:text-7xl font-cursive leading-[1.3] py-1 golden-wave-hover tracking-wide"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-wide md:tracking-wider leading-tight py-1 golden-wave-hover select-none whitespace-nowrap"
                 style={{
+                  fontFamily: "var(--font-serif)",
                   filter: "drop-shadow(0 1px 1px rgba(74,31,29,0.15))",
                 }}
                 title="Nischay & Yashaswini"
               >
                 {coupleEn}
               </h1>
+
               {isKn ? (
                 <p
                   className="text-3xl md:text-5xl leading-[1.6] font-semibold golden-wave-hover"

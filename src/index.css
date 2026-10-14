@@ -21,7 +21,9 @@
     --surface: #FCF8F0;
     --surface-2: #FAF3E8;
 
-    --font-cursive: 'Great Vibes', cursive;
+    --font-cursive: 'Pinyon Script', 'Alex Brush', cursive;
+    --font-pinyon: 'Pinyon Script', cursive;
+    --font-alex: 'Alex Brush', cursive;
     --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
     --font-body: 'Lora', Georgia, serif;
     --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
