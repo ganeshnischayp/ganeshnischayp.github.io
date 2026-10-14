@@ -62,48 +62,124 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
     ctx.globalCompositeOperation = "source-over";
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Radiant Metallic Gold Foil Gradient
+    // 1. Pale Gold Silk Foil Base Gradient (Soft, delicate champagne pale gold)
     const goldGrad = ctx.createLinearGradient(0, 0, width, height);
-    goldGrad.addColorStop(0, "#C99E3A");
-    goldGrad.addColorStop(0.18, "#F7DA7C");
-    goldGrad.addColorStop(0.35, "#FFF6DF"); // High-gloss specular shimmer
-    goldGrad.addColorStop(0.5, "#E5BF67");  // Warm royal wedding gold
-    goldGrad.addColorStop(0.68, "#B38022"); // Deep rich gold
-    goldGrad.addColorStop(0.82, "#FCE8A2"); // Secondary bright golden gleam
-    goldGrad.addColorStop(1, "#9E6F18");
+    goldGrad.addColorStop(0, "#E7D7B5");    // Soft pale champagne gold
+    goldGrad.addColorStop(0.18, "#F7EDD5"); // Luminous pale gold silk
+    goldGrad.addColorStop(0.35, "#FFFDF5"); // Pale ivory-gold shimmer highlight
+    goldGrad.addColorStop(0.5, "#E2CE9F");  // Classic delicate pale gold
+    goldGrad.addColorStop(0.68, "#D7BD84"); // Soft warm antique pale gold undertone
+    goldGrad.addColorStop(0.82, "#F8F0DD"); // Bright pale gold gleam
+    goldGrad.addColorStop(1, "#CFB175");    // Gentle pale gold edge
 
     ctx.fillStyle = goldGrad;
     ctx.fillRect(0, 0, width, height);
 
-    // 2. Translucent Diagonal Shiny Light Sheen Sweep
+    // 2. Fine Gold Glitter Particle Dust & Flecks
+    let seed = 7719;
+    const pseudoRandom = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+
+    // Paint a dense field of micro gold glitters (~200 particles)
+    const glitterCount = Math.floor((width * height) / 380);
+    for (let i = 0; i < glitterCount; i++) {
+      const gx = pseudoRandom() * width;
+      const gy = pseudoRandom() * height;
+      const gr = 0.5 + pseudoRandom() * 1.5;
+      const alpha = 0.35 + pseudoRandom() * 0.55;
+
+      const mod = i % 5;
+      if (mod === 0) {
+        // Bright radiant diamond glint
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+      } else if (mod === 1) {
+        // Rich warm gold glitter speck
+        ctx.fillStyle = `rgba(255, 220, 110, ${alpha})`;
+      } else if (mod === 2) {
+        // Deep metallic gold flake
+        ctx.fillStyle = `rgba(218, 165, 32, ${alpha * 0.85})`;
+      } else if (mod === 3) {
+        // Pale champagne gold shimmer
+        ctx.fillStyle = `rgba(255, 243, 196, ${alpha})`;
+      } else {
+        // Amber gold sparkle
+        ctx.fillStyle = `rgba(238, 190, 80, ${alpha * 0.9})`;
+      }
+
+      ctx.beginPath();
+      ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 3. Four-point Golden Glitter Star Sparkles
+    const drawGlitterStar = (sx: number, sy: number, arm: number) => {
+      ctx.save();
+      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.shadowColor = "rgba(255, 215, 80, 0.9)";
+      ctx.shadowBlur = 5;
+      ctx.beginPath();
+      ctx.moveTo(sx, sy - arm);
+      ctx.quadraticCurveTo(sx, sy, sx + arm, sy);
+      ctx.quadraticCurveTo(sx, sy, sx, sy + arm);
+      ctx.quadraticCurveTo(sx, sy, sx - arm, sy);
+      ctx.quadraticCurveTo(sx, sy, sx, sy - arm);
+      ctx.closePath();
+      ctx.fill();
+
+      // Golden center core
+      ctx.fillStyle = "rgba(255, 228, 120, 0.9)";
+      ctx.beginPath();
+      ctx.arc(sx, sy, arm * 0.28, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    const sparkleCoords = [
+      [width * 0.12, height * 0.22, 5.5],
+      [width * 0.86, height * 0.18, 5],
+      [width * 0.22, height * 0.80, 4.5],
+      [width * 0.84, height * 0.76, 5],
+      [width * 0.35, height * 0.26, 3.5],
+      [width * 0.68, height * 0.78, 3.8],
+      [width * 0.14, height * 0.54, 3.2],
+      [width * 0.88, height * 0.48, 3.5],
+      [width * 0.50, height * 0.16, 4],
+    ];
+    for (const [sx, sy, arm] of sparkleCoords) {
+      drawGlitterStar(sx, sy, arm);
+    }
+
+    // 4. Soft Pale Gold Luminous Sheen Sweep
     const sheenGrad = ctx.createLinearGradient(0, 0, width, height * 0.85);
     sheenGrad.addColorStop(0, "rgba(255, 255, 255, 0)");
-    sheenGrad.addColorStop(0.36, "rgba(255, 255, 255, 0.06)");
-    sheenGrad.addColorStop(0.48, "rgba(255, 255, 255, 0.38)"); // Bright shiny luster beam!
-    sheenGrad.addColorStop(0.6, "rgba(255, 255, 255, 0.06)");
+    sheenGrad.addColorStop(0.38, "rgba(255, 250, 235, 0.06)");
+    sheenGrad.addColorStop(0.50, "rgba(255, 255, 255, 0.35)"); // Pale glint
+    sheenGrad.addColorStop(0.62, "rgba(255, 250, 235, 0.06)");
     sheenGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
     ctx.fillStyle = sheenGrad;
     ctx.fillRect(0, 0, width, height);
 
-    // 3. Elegant Outer Golden Borders with Depth
-    ctx.strokeStyle = "rgba(110, 75, 18, 0.45)";
-    ctx.lineWidth = 2;
+    // 5. Pale Gold Delicate Borders
+    ctx.strokeStyle = "rgba(165, 130, 65, 0.35)";
+    ctx.lineWidth = 1.8;
     ctx.strokeRect(9, 9, width - 18, height - 18);
 
-    ctx.strokeStyle = "rgba(255, 250, 235, 0.85)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
     ctx.lineWidth = 1;
     ctx.strokeRect(12, 12, width - 24, height - 24);
 
     // Subtle inner dashed stitch border
-    ctx.strokeStyle = "rgba(120, 80, 20, 0.35)";
+    ctx.strokeStyle = "rgba(180, 145, 80, 0.3)";
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 3]);
     ctx.strokeRect(16, 16, width - 32, height - 32);
     ctx.setLineDash([]);
 
-    // Corner decorative diamonds with center pearl
+    // Corner decorative diamonds with center pearl in pale gold
     const drawCornerDiamond = (cx: number, cy: number, s: number) => {
-      ctx.fillStyle = "#7A4E15";
+      ctx.fillStyle = "#A88344";
       ctx.beginPath();
       ctx.moveTo(cx, cy - s);
       ctx.lineTo(cx + s, cy);
@@ -112,7 +188,7 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
       ctx.closePath();
       ctx.fill();
 
-      ctx.fillStyle = "#FFF7DF";
+      ctx.fillStyle = "#FFFDF5";
       ctx.beginPath();
       ctx.arc(cx, cy, 1.2, 0, Math.PI * 2);
       ctx.fill();
@@ -122,17 +198,7 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
     drawCornerDiamond(12, height - 12, 4);
     drawCornerDiamond(width - 12, height - 12, 4);
 
-    // 4. Little decorative stars on foil for shine
-    const drawSparkle = (sx: number, sy: number, r: number) => {
-      ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
-      ctx.beginPath();
-      ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fill();
-    };
-    drawSparkle(cxSparkle(width, 0.22), cySparkle(height, 0.26), 2);
-    drawSparkle(cxSparkle(width, 0.78), cySparkle(height, 0.76), 2);
-
-    // 5. Central Plaque for "SCRATCH HERE" with Radiant Shimmering Gold
+    // 6. Central Plaque for "SCRATCH HERE" with Pale Gold & Champagne Tone
     const cx = width / 2;
     const cy = height / 2;
     const plaqueW = Math.min(210, width - 60);
@@ -141,21 +207,21 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
 
     // Plaque soft golden shadow
     ctx.save();
-    ctx.shadowColor = "rgba(100, 65, 15, 0.35)";
+    ctx.shadowColor = "rgba(110, 80, 30, 0.22)";
     ctx.shadowBlur = 8;
-    ctx.shadowOffsetY = 3;
+    ctx.shadowOffsetY = 2;
 
-    // Shimmering bright gold plaque fill
+    // Pale gold plaque fill
     const plaqueGrad = ctx.createLinearGradient(
       cx - plaqueW / 2,
       cy - plaqueH / 2,
       cx + plaqueW / 2,
       cy + plaqueH / 2
     );
-    plaqueGrad.addColorStop(0, "#FFF9E6");
-    plaqueGrad.addColorStop(0.3, "#FCE7A2");
-    plaqueGrad.addColorStop(0.7, "#E5BF5E");
-    plaqueGrad.addColorStop(1, "#FFF4D2");
+    plaqueGrad.addColorStop(0, "#FFFDF7");
+    plaqueGrad.addColorStop(0.35, "#F7EDD0");
+    plaqueGrad.addColorStop(0.7, "#E5CE98");
+    plaqueGrad.addColorStop(1, "#FAF3DF");
 
     ctx.beginPath();
     ctx.roundRect(cx - plaqueW / 2, cy - plaqueH / 2, plaqueW, plaqueH, plaqueR);
@@ -163,9 +229,9 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
     ctx.fill();
     ctx.restore();
 
-    // Plaque golden rim
-    ctx.strokeStyle = "#C49226";
-    ctx.lineWidth = 1.8;
+    // Plaque pale gold rim
+    ctx.strokeStyle = "#C4A76E";
+    ctx.lineWidth = 1.6;
     ctx.stroke();
 
     // Inner bright stitch
@@ -177,26 +243,19 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
       plaqueH - 6,
       plaqueR - 3
     );
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 2.5]);
     ctx.stroke();
     ctx.setLineDash([]);
 
-    // 6. "SCRATCH HERE" Text - Bold, rich, with golden highlights
+    // 7. "SCRATCH HERE" Text - Bold, rich burgundy with subtle golden highlight
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.font = "bold 13.5px -apple-system, BlinkMacSystemFont, 'Montserrat', sans-serif";
     ctx.fillStyle = "#54211D"; // Royal wedding wine
     ctx.fillText("✨  SCRATCH HERE  ✨", cx, cy);
   }, []);
-
-  function cxSparkle(w: number, ratio: number) {
-    return Math.round(w * ratio);
-  }
-  function cySparkle(h: number, ratio: number) {
-    return Math.round(h * ratio);
-  }
 
   useEffect(() => {
     initCanvas();
@@ -363,10 +422,10 @@ export function ScratchDateCard({ onRevealed, lang = "en" }: ScratchDateCardProp
       {/* LUXURY SCRATCH CARD PASS CONTAINER - Fully responsive and height-safe */}
       <div
         ref={containerRef}
-        className="relative w-full max-w-[345px] sm:max-w-[420px] min-h-[250px] sm:min-h-[260px] rounded-2xl shadow-[0_12px_32px_-8px_rgba(74,31,29,0.22)] border-2 border-[#d4af37] p-1.5 bg-[#FAF3E8] select-none touch-none overflow-hidden"
+        className="relative w-full max-w-[345px] sm:max-w-[420px] min-h-[250px] sm:min-h-[260px] rounded-2xl shadow-[0_12px_32px_-8px_rgba(74,31,29,0.18)] border-2 border-[#DFC995] p-1.5 bg-[#FAF3E8] select-none touch-none overflow-hidden"
       >
         {/* INNER REVEALED CONTENT UNDERNEATH */}
-        <div className="relative w-full h-full min-h-[238px] sm:min-h-[248px] rounded-xl bg-gradient-to-b from-[#FFFDF9] via-[#FCF8F0] to-[#F5ECE0] border border-[#d4af37]/40 p-3 sm:p-3.5 flex flex-col justify-between text-center overflow-hidden">
+        <div className="relative w-full h-full min-h-[238px] sm:min-h-[248px] rounded-xl bg-gradient-to-b from-[#FFFDF9] via-[#FCF8F0] to-[#F5ECE0] border border-[#DFC995]/50 p-3 sm:p-3.5 flex flex-col justify-between text-center overflow-hidden">
           {/* Subtle watermark monogram */}
           <div
             aria-hidden="true"

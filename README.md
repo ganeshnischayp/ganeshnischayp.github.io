@@ -1,5 +1,6 @@
 # Nischay & Yashaswini — Wedding Invitation Web App
 
+Interactive royal Indian wedding invitation website for the auspicious wedding of **Nischay & Yashaswini** at Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna, Karnataka. Built with **React**, **Vite**, **TypeScript**, **Tailwind CSS v4**, and **Motion**.
 
 ---
 
@@ -29,7 +30,7 @@ To build the optimized static production bundle:
 ```bash
 npm run build
 ```
-The output files will be created in the `dist/` directory, ready to deploy to any static hosting service (Vercel, Netlify, Cloudflare Pages, GitHub Pages, Firebase Hosting, AWS S3, etc.).
+The output files will be created in the `dist/` directory, ready to deploy to GitHub Pages, Vercel, Netlify, or any static hosting service.
 
 To preview the production build locally:
 ```bash
@@ -47,9 +48,8 @@ npm run preview
 ├── vite.config.ts               # Vite bundler configuration with Tailwind CSS plugin
 ├── public/                      # Static assets served as-is
 │   ├── favicon.ico              # Site favicon
-│   ├── wedding-invitation-source.zip # Complete project source archive
 │   └── images/
-│       ├── logo/                # Gold & wine monograms and heart logo
+│       ├── logo/                # Authentic NY monogram logo assets
 │       ├── einvitation/         # Background courtyards & floral artwork
 │       │   └── flora/           # Swaying botanical watercolor sprites
 │       └── thingstodo/          # Exploration guide metadata
@@ -60,23 +60,24 @@ npm run preview
     ├── lib/
     │   └── inviteCodec.ts       # Base64 + checksum URL encoder/decoder for `?d=...`
     ├── data/
-    │   ├── i18n.ts              # Full English & Telugu translation dictionaries
-    │   ├── transitData.ts       # Airport, train, road directions & city route suggester
-    │   ├── explorationData.ts   # Papikondalu, Maredumilli, Lambasingi & street food
+    │   ├── i18n.ts              # Full English & Kannada translation dictionaries
+    │   ├── transitData.ts       # Airport, train, road directions & routes to Channarayapatna
+    │   ├── explorationData.ts   # Shravanabelagola, Shettihalli, Belur, Halebidu attractions
     │   └── silksData.ts         # Dress code palette: Sage, Wine, Gold, Cream, Dusk Rose
     └── components/
         ├── common/
         ├── generator/
         │   └── InviteGeneratorModal.tsx # Custom guest invite link generator tool
         └── invitation/
-            ├── DoorScene.tsx    # Palace courtyard entrance with illuminated lanterns
+            ├── DoorScene.tsx    # Palace courtyard entrance with illuminated lanterns & wax seal
             ├── InvitationCard.tsx # Main royal wedding card with double gold frames
+            ├── ScratchDateCard.tsx # Interactive scratch-to-reveal golden card & countdown
             ├── FloraDecorations.tsx # Swaying watercolor florals
-            ├── Monogram.tsx     # Animated monogram emblem
-            ├── TimelineItinerary.tsx # Schedule: Gathering, Word, Promise, Feast, Celebration
+            ├── Monogram.tsx     # Authentic NY monogram emblem
+            ├── TimelineItinerary.tsx # Schedule: Grand Reception & Shubha Muhurtha
             ├── SilksPalette.tsx # What to Wear canvas with swaying draped silks
-            ├── TravelAndExplore.tsx # Transit guide + Things to do
-            └── RsvpModal.tsx    # Multi-step RSVP form with guest & meal preferences
+            ├── TravelAndExplore.tsx # Transit guide + Things to do in Channarayapatna & Hassan
+            └── RsvpModal.tsx    # Multi-step RSVP form with guest & blessing notes
 ```
 
 ---
@@ -84,21 +85,4 @@ npm run preview
 ## 🎨 URL Customization & Codec
 The application accepts a personalized query parameter `?d=...` containing a 2-character checksum and base64 payload.
 
-**Default link included in brief:**
-```text
-/invitation?d=1ISeyJ2IjoxLCJuIjoiU2FpIEt1bWFyIiwiciI6MywiY2VsIjoxLCJyc3ZwIjoxfQ
-```
-- Invitee: **Sai Kumar** (`n: "Sai Kumar"`)
-- Relationship: **Friend** (`r: 3`)
-- Celebration: **Yes** (`cel: 1`)
-- RSVP: **Enabled** (`rsvp: 1`)
-
-Use the **"Create Invite"** button in the app header to generate custom links for any guest!
-
----
-
-## 🌐 Deploy to Vercel
-1. Push this repository to GitHub or GitLab.
-2. Import the repository in [Vercel](https://vercel.com).
-3. Framework Preset: **Vite**.
-4. Click **Deploy**.
+Use the **"Create Invite"** button in the app header to generate custom personalized links for any guest!

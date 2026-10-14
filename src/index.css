@@ -24,6 +24,7 @@
     --font-cursive: 'Pinyon Script', 'Alex Brush', cursive;
     --font-pinyon: 'Pinyon Script', cursive;
     --font-alex: 'Alex Brush', cursive;
+    --font-parisienne: 'Parisienne', cursive;
     --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
     --font-body: 'Lora', Georgia, serif;
     --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
@@ -46,6 +47,18 @@
 
 .font-cursive {
   font-family: var(--font-cursive);
+}
+
+.font-pinyon {
+  font-family: var(--font-pinyon);
+}
+
+.font-alex {
+  font-family: var(--font-alex);
+}
+
+.font-parisienne {
+  font-family: var(--font-parisienne);
 }
 
 .font-serif {
@@ -150,22 +163,22 @@
 .golden-wave-hover {
   background: linear-gradient(
     95deg,
-    #4a1f1d 0%,
-    #7a4521 15%,
-    #c49438 30%,
-    #ffea88 45%,
+    #5c2415 0%,
+    #8b4a1b 15%,
+    #c99538 30%,
+    #ffe98a 45%,
     #ffffff 50%,
-    #ffea88 55%,
-    #c49438 70%,
-    #7a4521 85%,
-    #4a1f1d 100%
+    #ffe98a 55%,
+    #c99538 70%,
+    #8b4a1b 85%,
+    #5c2415 100%
   );
   background-size: 250% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   animation: golden-wave 5s linear infinite;
-  filter: drop-shadow(0 1px 2px rgba(74, 31, 29, 0.2)) drop-shadow(0 0 10px rgba(201, 167, 118, 0.5));
+  filter: drop-shadow(0 1px 2px rgba(74, 31, 29, 0.2)) drop-shadow(0 0 10px rgba(201, 167, 118, 0.45));
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 

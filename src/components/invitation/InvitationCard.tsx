@@ -6,6 +6,7 @@ import {
   Languages,
   ChevronDown,
   Sparkles,
+  ArrowLeft,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Monogram } from "./Monogram";
@@ -42,6 +43,7 @@ interface InvitationCardProps {
   onToggleLang: () => void;
   onOpenRsvp: () => void;
   showRsvp: boolean;
+  onCloseDoor?: () => void;
 }
 
 const BEST_WISHES = [
@@ -60,6 +62,7 @@ export function InvitationCard({
   onToggleLang,
   onOpenRsvp,
   showRsvp,
+  onCloseDoor,
 }: InvitationCardProps) {
   const [showMapPreview, setShowMapPreview] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -198,8 +201,8 @@ export function InvitationCard({
             </span>
           </div>
 
-          {/* Couple's Names Calligraphy with Golden Light Effect (Active on Mobile & Desktop) */}
-          <div className="relative inline-block mt-0 mb-2 sm:my-3 max-w-full group cursor-pointer transition-transform duration-300 hover:scale-[1.02]">
+          {/* Couple's Names with Golden Light Effect (Active on Mobile & Desktop) */}
+          <div className="relative inline-block mt-0 mb-2 sm:my-3 max-w-full group">
             {/* Soft warm ambient gold aura - always active on mobile, extra bright on hover */}
             <div
               aria-hidden="true"
@@ -222,7 +225,8 @@ export function InvitationCard({
                 style={{
                   fontFamily: "var(--font-serif)",
                   fontSize: "clamp(1.95rem, 7.4vw, 4.25rem)",
-                  filter: "drop-shadow(0 1px 1px rgba(74,31,29,0.18)) drop-shadow(0 0 12px rgba(201,167,118,0.45))",
+                  filter:
+                    "drop-shadow(0 1px 1px rgba(74,31,29,0.18)) drop-shadow(0 0 12px rgba(201,167,118,0.45))",
                 }}
                 title="Nischay & Yashaswini"
               >
@@ -585,6 +589,28 @@ export function InvitationCard({
               </span>
             </button>
           </div>
+
+          {/* Close the Palace Doors at the end of the invite */}
+          {onCloseDoor && (
+            <div className="flex justify-center pt-7 pb-2">
+              <button
+                type="button"
+                onClick={onCloseDoor}
+                className="inline-flex items-center gap-2.5 px-6 py-2.5 rounded-full border border-[#c9a776]/50 bg-[#FDFBF7] text-[#6B2D2A] hover:bg-[#6B2D2A] hover:text-[#FAF3E8] text-xs font-sans uppercase tracking-[0.2em] font-semibold transition-all shadow-xs hover:shadow-md hover:scale-[1.02] cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span
+                  style={
+                    isKn
+                      ? { fontFamily: "var(--font-kannada)", fontSize: "0.95rem" }
+                      : undefined
+                  }
+                >
+                  {t("door.close", lang)}
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

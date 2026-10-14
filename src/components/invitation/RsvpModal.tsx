@@ -9,7 +9,6 @@ interface Companion {
   name: string;
   rel: string;
   age: "adult" | "child";
-  foodPref: "veg" | "nonveg";
 }
 
 interface RsvpModalProps {
@@ -21,8 +20,8 @@ interface RsvpModalProps {
   rel?: string;
 }
 
-const WHATSAPP_NUMBER = "919491519909";
-const WHATSAPP_DISPLAY = "+91 94915 19909";
+const WHATSAPP_NUMBER = "918660019207";
+const WHATSAPP_DISPLAY = "+91 86600 19207";
 const MAX_COMPANIONS = 3;
 
 export function RsvpModal({
@@ -37,7 +36,6 @@ export function RsvpModal({
   const [side, setSide] = useState<"both" | "bride" | "groom">("both");
   const [attending, setAttending] = useState<boolean>(true);
   const [companions, setCompanions] = useState<Companion[]>([]);
-  const [foodPref, setFoodPref] = useState<"veg" | "nonveg">("nonveg");
   const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedData, setSubmittedData] = useState<{
@@ -45,6 +43,7 @@ export function RsvpModal({
     partySize: number;
     attending: boolean;
     isReturning?: boolean;
+    whatsappUrl?: string;
   } | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -68,7 +67,7 @@ export function RsvpModal({
           setSubmittedData({
             name: prev.name,
             partySize: prev.partySize || 1,
-            attending: prev.attending,
+            attending: true,
             isReturning: true,
           });
         }
@@ -87,7 +86,6 @@ export function RsvpModal({
         name: "",
         rel: "Friend",
         age: "adult",
-        foodPref: "nonveg",
       },
     ]);
   };
@@ -115,25 +113,66 @@ export function RsvpModal({
       return;
     }
 
-    if (attending) {
-      for (let i = 0; i < companions.length; i++) {
-        if (!companions[i].name.trim()) {
-          setErrorMsg(t("rsvp.err.guest", lang, { n: i + 1 }));
-          return;
-        }
+    for (let i = 0; i < companions.length; i++) {
+      if (!companions[i].name.trim()) {
+        setErrorMsg(t("rsvp.err.guest", lang, { n: i + 1 }));
+        return;
       }
     }
 
     setIsSubmitting(true);
 
+    const partySize = 1 + companions.length;
+    const sideLabel =
+      side === "both"
+        ? "Both Groom & Bride"
+        : side === "bride"
+        ? "Bride's Side (Yashaswini)"
+        : "Groom's Side (Nischay)";
+
+    const msgLines = [
+      "🌸 *Wedding RSVP — Nischay & Yashaswini* 🌸",
+      "",
+      `*Name:* ${name.trim()}`,
+      `*Phone:* ${phone.trim()}`,
+      `*Side:* ${sideLabel}`,
+      `*Attending:* Joyfully Attending ✨`,
+      `*Total Guests:* ${partySize} ${partySize === 1 ? "person" : "people"}`,
+    ];
+
+    if (companions.length > 0) {
+      msgLines.push("");
+      msgLines.push("*Accompanying Guests:*");
+      companions.forEach((c, idx) => {
+        msgLines.push(
+          `  ${idx + 1}. ${c.name.trim()} (${c.age === "child" ? "Child" : "Adult"})`
+        );
+      });
+    }
+
+    if (note.trim()) {
+      msgLines.push("");
+      msgLines.push(`*Wishes & Blessings:*`);
+      msgLines.push(`"${note.trim()}"`);
+    }
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      msgLines.join("\n")
+    )}`;
+
+    // Open WhatsApp DM directly to +918660019207
+    try {
+      window.open(whatsappUrl, "_blank");
+    } catch (err) {
+      console.warn("Could not open WhatsApp window automatically:", err);
+    }
+
     setTimeout(() => {
-      const partySize = attending ? 1 + companions.length : 0;
       const record = {
         name: name.trim(),
         phone: phone.trim(),
         side,
-        attending,
-        foodPref,
+        attending: true,
         companions,
         note: note.trim(),
         partySize,
@@ -145,7 +184,10 @@ export function RsvpModal({
         const stored = localStorage.getItem("ourforever_rsvp_submissions");
         const list = stored ? JSON.parse(stored) : [];
         list.push(record);
-        localStorage.setItem("ourforever_rsvp_submissions", JSON.stringify(list));
+        localStorage.setItem(
+          "ourforever_rsvp_submissions",
+          JSON.stringify(list)
+        );
       } catch (err) {
         console.error("Local storage error:", err);
       }
@@ -154,18 +196,17 @@ export function RsvpModal({
       setSubmittedData({
         name: name.trim(),
         partySize,
-        attending,
+        attending: true,
+        whatsappUrl,
       });
 
-      if (attending) {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ["#c9a776", "#6B2D2A", "#A3B18A", "#EDE2CB"],
-        });
-      }
-    }, 700);
+      confetti({
+        particleCount: 80,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ["#c9a776", "#6B2D2A", "#A3B18A", "#EDE2CB"],
+      });
+    }, 600);
   };
 
   if (!isOpen) return null;
@@ -223,18 +264,18 @@ export function RsvpModal({
                 : t("rsvp.done.line.no", lang)}
             </p>
 
-            <div className="pt-4 border-t border-[#c9a776]/25">
-              <p className="text-xs text-muted-foreground mb-3 font-sans">
-                Need to change anything? Message us directly on WhatsApp:
+            <div className="pt-4 border-t border-[#c9a776]/25 space-y-2.5">
+              <p className="text-xs text-muted-foreground font-sans">
+                Your RSVP details are prepared for WhatsApp DM (+91 86600 19207):
               </p>
               <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                href={submittedData.whatsappUrl || `https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] text-white font-sans text-xs uppercase tracking-wider font-semibold shadow-xs hover:bg-[#20ba5a] transition-colors"
+                className="inline-flex items-center justify-center gap-2 w-full py-3 px-5 rounded-full bg-[#25D366] text-white font-sans text-xs uppercase tracking-wider font-semibold shadow-md hover:bg-[#20ba5a] transition-all"
               >
                 <MessageCircle className="w-4 h-4" />
-                WhatsApp {WHATSAPP_DISPLAY}
+                Send Message on WhatsApp ({WHATSAPP_DISPLAY})
               </a>
             </div>
 
@@ -272,35 +313,12 @@ export function RsvpModal({
               </div>
             )}
 
-            {/* Attendance Toggle */}
-            <div className="space-y-1.5">
-              <label className="block text-xs uppercase tracking-wider text-[#b8924f] font-sans font-medium">
-                {t("rsvp.attend.legend", lang)}
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                <button
-                  type="button"
-                  onClick={() => setAttending(true)}
-                  className={`py-2.5 px-4 rounded-xl border text-xs font-sans uppercase tracking-wider font-medium transition-all ${
-                    attending
-                      ? "border-[#6B2D2A] bg-[#6B2D2A] text-white shadow-xs"
-                      : "border-[#c9a776]/30 bg-[#FDFBF7] text-[#2a2a2a] hover:bg-[#F4EBDA]"
-                  }`}
-                >
-                  {t("rsvp.attend.yes", lang)}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAttending(false)}
-                  className={`py-2.5 px-4 rounded-xl border text-xs font-sans uppercase tracking-wider font-medium transition-all ${
-                    !attending
-                      ? "border-[#6B2D2A] bg-[#6B2D2A] text-white shadow-xs"
-                      : "border-[#c9a776]/30 bg-[#FDFBF7] text-[#2a2a2a] hover:bg-[#F4EBDA]"
-                  }`}
-                >
-                  {t("rsvp.attend.no", lang)}
-                </button>
-              </div>
+            {/* Joyfully Attending Badge (Regretfully decline removed) */}
+            <div className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#6B2D2A]/10 border border-[#6B2D2A]/25 text-[#6B2D2A]">
+              <Heart className="w-4 h-4 fill-current text-[#6B2D2A]" />
+              <span className="text-xs font-sans uppercase tracking-wider font-semibold">
+                {t("rsvp.attend.yes", lang)} ✨
+              </span>
             </div>
 
             {/* Basic Info */}
@@ -361,47 +379,11 @@ export function RsvpModal({
               </div>
             </div>
 
-            {/* If Attending: Meal preference & Companions */}
+            {/* If Attending: Companions */}
             {attending && (
               <div className="space-y-4 pt-2 border-t border-[#c9a776]/25">
-                {/* Food Preference */}
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <label className="block text-[11px] uppercase tracking-wider text-muted-foreground font-sans">
-                      {t("rsvp.food.you.label", lang)}
-                    </label>
-                    <span className="text-[10px] text-muted-foreground italic">
-                      {t("rsvp.food.hint", lang)}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setFoodPref("nonveg")}
-                      className={`py-2 px-3 text-xs rounded-lg border font-medium transition-all ${
-                        foodPref === "nonveg"
-                          ? "border-[#6B2D2A] bg-[#6B2D2A] text-white"
-                          : "border-[#c9a776]/30 bg-[#FDFBF7] text-[#2a2a2a]"
-                      }`}
-                    >
-                      🍗 {t("rsvp.food.nonveg", lang)}
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setFoodPref("veg")}
-                      className={`py-2 px-3 text-xs rounded-lg border font-medium transition-all ${
-                        foodPref === "veg"
-                          ? "border-[#6B2D2A] bg-[#6B2D2A] text-white"
-                          : "border-[#c9a776]/30 bg-[#FDFBF7] text-[#2a2a2a]"
-                      }`}
-                    >
-                      🥗 {t("rsvp.food.veg", lang)}
-                    </button>
-                  </div>
-                </div>
-
                 {/* Companions */}
-                <div className="space-y-3 pt-2">
+                <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <label className="block text-[11px] uppercase tracking-wider text-muted-foreground font-sans">
                       {t("rsvp.party.label", lang)}
@@ -487,35 +469,6 @@ export function RsvpModal({
                             Child
                           </button>
                         </div>
-
-                        <div className="flex gap-1">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              updateCompanion(comp.id, { foodPref: "nonveg" })
-                            }
-                            className={`flex-1 py-1 text-[10px] rounded border ${
-                              comp.foodPref === "nonveg"
-                                ? "bg-[#6B2D2A] text-white border-[#6B2D2A]"
-                                : "bg-[#FDFBF7] border-[#c9a776]/30 text-muted-foreground"
-                            }`}
-                          >
-                            Non-veg
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              updateCompanion(comp.id, { foodPref: "veg" })
-                            }
-                            className={`flex-1 py-1 text-[10px] rounded border ${
-                              comp.foodPref === "veg"
-                                ? "bg-[#6B2D2A] text-white border-[#6B2D2A]"
-                                : "bg-[#FDFBF7] border-[#c9a776]/30 text-muted-foreground"
-                            }`}
-                          >
-                            Veg
-                          </button>
-                        </div>
                       </div>
                     </div>
                   ))}
@@ -552,18 +505,18 @@ export function RsvpModal({
               />
             </div>
 
-            {/* Submit */}
+            {/* Submit via WhatsApp DM */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3.5 rounded-full bg-[#6B2D2A] hover:bg-[#582421] text-white font-sans uppercase tracking-widest text-xs font-semibold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+              className="w-full py-3.5 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white font-sans uppercase tracking-wider text-xs font-semibold shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? (
                 <span>{t("rsvp.btn.sending", lang)}</span>
               ) : (
                 <>
-                  <Send className="w-4 h-4" />
-                  <span>{t("rsvp.btn.send", lang)}</span>
+                  <MessageCircle className="w-4 h-4 fill-current" />
+                  <span>Send RSVP via WhatsApp DM</span>
                 </>
               )}
             </button>

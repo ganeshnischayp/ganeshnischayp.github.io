@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { ArrowLeft, Plus } from "lucide-react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import { ArrowLeft, Plus, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   decodeInvite,
@@ -61,6 +61,22 @@ export default function App() {
   const note = invite.m || "";
   const honorific = invite.h || "";
 
+  // Only show the top nav bar if the invitee name is NishuYashu
+  const isPrivilegedAdmin = useMemo(() => {
+    const normalize = (val?: string | null) =>
+      (val || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const target = "nishuyashu";
+    if (normalize(guestName).includes(target)) return true;
+    if (normalize(invite?.n).includes(target)) return true;
+    if (normalize(pathInvitee).includes(target)) return true;
+    if (typeof window !== "undefined") {
+      const path = normalize(window.location.pathname);
+      const search = normalize(window.location.search);
+      if (path.includes(target) || search.includes(target)) return true;
+    }
+    return false;
+  }, [guestName, invite?.n, pathInvitee]);
+
   // Set initial language if payload specifies 'kn' or 'en'
   useEffect(() => {
     if (invite.l === "kn") {
@@ -69,6 +85,47 @@ export default function App() {
       setLang("en");
     }
   }, [invite.l]);
+
+  // Background Audio Controller for romantic-vows.mp3
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [hasUserToggled, setHasUserToggled] = useState(false);
+
+  const toggleAudio = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    setHasUserToggled(true);
+
+    if (!audio.paused) {
+      audio.pause();
+      setIsPlaying(false);
+    } else {
+      audio.volume = 0.55;
+      audio
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.warn("Audio playback prevented:", err);
+          setIsPlaying(false);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
+
+    return () => {
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+    };
+  }, []);
 
   // Phase progression: load -> ready after 1.5s
   useEffect(() => {
@@ -89,6 +146,17 @@ export default function App() {
       navigator.vibrate(20);
     }
 
+    // Auto-start background music on user's door tap gesture
+    if (audioRef.current && !hasUserToggled && audioRef.current.paused) {
+      audioRef.current.volume = 0.55;
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.warn("Autoplay blocked:", err);
+        });
+    }
+
     setTimeout(() => {
       setPhase("through");
     }, 1200);
@@ -96,7 +164,7 @@ export default function App() {
     setTimeout(() => {
       setPhase("card");
     }, 2000);
-  }, [phase]);
+  }, [phase, hasUserToggled]);
 
   // Close the door / Seal & Return
   const handleCloseDoor = useCallback(() => {
@@ -194,71 +262,61 @@ export default function App() {
               ))}
             </div>
 
-            {/* Top Navigation Bar */}
-            <header className="sticky top-0 z-30 w-full bg-[#FCF8F0]/90 backdrop-blur-md border-b border-[#c9a776]/30 px-3 sm:px-6 py-2.5 shadow-xs">
-              <div className="max-w-[63.46rem] mx-auto flex items-center justify-between gap-2">
-                {/* Close the door button */}
-                <button
-                  type="button"
-                  onClick={handleCloseDoor}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#c9a776]/30 text-xs font-sans uppercase tracking-widest text-[#5c5546] hover:text-[#2f2a22] hover:bg-black/5 transition-all cursor-pointer"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5" />
-                  <span
-                    style={
-                      isKn
-                        ? { fontFamily: "var(--font-kannada)", fontSize: "1.05rem" }
-                        : undefined
-                    }
-                  >
-                    {t("door.close", lang)}
-                  </span>
-                </button>
-
-                {/* Preset Switcher & Action buttons */}
-                <div className="flex items-center gap-2">
-                  <div className="hidden sm:flex items-center gap-1 text-[11px] text-muted-foreground mr-1">
-                    <span className="font-sans font-medium">Guest:</span>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        loadPreset({ name: "Ramesh", rel: "friend", lang: "en" })
-                      }
-                      className={`px-2 py-0.5 rounded font-sans transition-colors cursor-pointer ${
-                        guestName === "Ramesh"
-                          ? "bg-[#6B2D2A] text-white"
-                          : "hover:bg-black/5"
-                      }`}
-                    >
-                      Ramesh
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        loadPreset({ name: "Suresh & Family", rel: "elder", lang: "en" })
-                      }
-                      className={`px-2 py-0.5 rounded font-sans transition-colors cursor-pointer ${
-                        guestName.includes("Suresh")
-                          ? "bg-[#6B2D2A] text-white"
-                          : "hover:bg-black/5"
-                      }`}
-                    >
-                      Suresh & Family
-                    </button>
+            {/* Top Navigation Bar - ONLY shown if invitee is NishuYashu */}
+            {isPrivilegedAdmin && (
+              <header className="sticky top-0 z-30 w-full bg-[#FCF8F0]/90 backdrop-blur-md border-b border-[#c9a776]/30 px-3 sm:px-6 py-2.5 shadow-xs">
+                <div className="max-w-[63.46rem] mx-auto flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="px-2.5 py-1 rounded-full bg-[#6B2D2A] text-white text-[11px] font-sans font-bold uppercase tracking-wider">
+                      Admin Mode: Nishu & Yashu
+                    </span>
                   </div>
 
-                  {/* Create Custom Invite Link */}
-                  <button
-                    type="button"
-                    onClick={() => setIsGeneratorOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#6B2D2A] text-white text-xs font-sans uppercase tracking-wider font-semibold shadow-xs hover:bg-[#582421] transition-all cursor-pointer"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Create Invite</span>
-                  </button>
+                  {/* Preset Switcher & Action buttons */}
+                  <div className="flex items-center gap-2">
+                    <div className="hidden sm:flex items-center gap-1 text-[11px] text-muted-foreground mr-1">
+                      <span className="font-sans font-medium">Guest:</span>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          loadPreset({ name: "Ramesh", rel: "friend", lang: "en" })
+                        }
+                        className={`px-2 py-0.5 rounded font-sans transition-colors cursor-pointer ${
+                          guestName === "Ramesh"
+                            ? "bg-[#6B2D2A] text-white"
+                            : "hover:bg-black/5"
+                        }`}
+                      >
+                        Ramesh
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          loadPreset({ name: "Suresh & Family", rel: "elder", lang: "kn" })
+                        }
+                        className={`px-2 py-0.5 rounded font-sans transition-colors cursor-pointer ${
+                          guestName.includes("Suresh")
+                            ? "bg-[#6B2D2A] text-white"
+                            : "hover:bg-black/5"
+                        }`}
+                      >
+                        Suresh & Family
+                      </button>
+                    </div>
+
+                    {/* Create Custom Invite Link */}
+                    <button
+                      type="button"
+                      onClick={() => setIsGeneratorOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#6B2D2A] text-white text-xs font-sans uppercase tracking-wider font-semibold shadow-xs hover:bg-[#582421] transition-all cursor-pointer"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Create Invite</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </header>
+              </header>
+            )}
 
             {/* Main Content Area */}
             <main className="w-full max-w-[63.46rem] mx-auto pt-5 md:pt-10 px-3.5 sm:px-6 md:px-8 pb-24 md:pb-28">
@@ -275,6 +333,7 @@ export default function App() {
                 onToggleLang={toggleLang}
                 onOpenRsvp={() => setIsRsvpOpen(true)}
                 showRsvp={showRsvp}
+                onCloseDoor={handleCloseDoor}
               />
             </main>
           </motion.div>
@@ -296,6 +355,38 @@ export default function App() {
         isOpen={isGeneratorOpen}
         onClose={() => setIsGeneratorOpen(false)}
       />
+
+      {/* BACKGROUND MUSIC (romantic-vows.mp3) */}
+      <audio
+        ref={audioRef}
+        src="/romantic-vows.mp3"
+        loop
+        preload="auto"
+      />
+
+      {/* FLOATING MUTE / UNMUTE BUTTON AT BOTTOM-LEFT CORNER */}
+      <button
+        type="button"
+        onClick={toggleAudio}
+        aria-label={isPlaying ? "Mute background music" : "Play romantic vows music"}
+        className="fixed bottom-5 left-5 z-50 flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-[#FCF8F0]/95 backdrop-blur-md border border-[#c9a776]/50 shadow-lg text-[#6B2D2A] hover:bg-[#FAF3E8] hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer group select-none"
+        title={isPlaying ? "Mute music" : "Play music"}
+      >
+        <div className="relative flex items-center justify-center w-5 h-5">
+          {isPlaying ? (
+            <>
+              {/* Soft pulsating gold ring */}
+              <span className="absolute -inset-1 rounded-full bg-[#c9a776]/30 animate-ping opacity-75 pointer-events-none" />
+              <Volume2 className="w-4 h-4 text-[#6B2D2A] animate-pulse" />
+            </>
+          ) : (
+            <VolumeX className="w-4 h-4 text-muted-foreground group-hover:text-[#6B2D2A] transition-colors" />
+          )}
+        </div>
+        <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-[#6B2D2A] hidden sm:inline">
+          {isPlaying ? "Mute Music" : "Play Music"}
+        </span>
+      </button>
     </div>
   );
 }
