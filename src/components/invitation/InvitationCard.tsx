@@ -57,7 +57,7 @@ export function InvitationCard({
   note = "",
   honorific = "",
   lang,
-  groomFirst = true,
+  groomFirst = false,
   showBestWishes,
   onToggleLang,
   onOpenRsvp,
@@ -228,7 +228,7 @@ export function InvitationCard({
                   filter:
                     "drop-shadow(0 1px 1px rgba(74,31,29,0.18)) drop-shadow(0 0 12px rgba(201,167,118,0.45))",
                 }}
-                title="Nischay & Yashaswini"
+                title={coupleEn}
               >
                 {coupleEn}
               </h1>

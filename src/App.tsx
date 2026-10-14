@@ -22,7 +22,7 @@ const DEFAULT_PARAM = encodeInvite({
   lang: "en",
   showCelebration: true,
   showRsvp: true,
-  groomFirst: true,
+  groomFirst: false, // Default is Bride first: Yashaswini & Nischay
 });
 
 export default function App() {
@@ -30,6 +30,7 @@ export default function App() {
   const [isRsvpOpen, setIsRsvpOpen] = useState(false);
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
   const [lang, setLang] = useState<"en" | "kn">("en");
+  const [urlParamsVersion, setUrlParamsVersion] = useState(0);
 
   // Read invitee name encoded in base64 format from URL path parameter (e.g. /UmFtZXNo, /TmlzaHVZYXNodQ==)
   const [pathInvitee, setPathInvitee] = useState<string | null>(() => getInviteeNameFromUrl());
@@ -38,6 +39,7 @@ export default function App() {
     const handleUrlCheck = () => {
       const current = getInviteeNameFromUrl();
       if (current) setPathInvitee(current);
+      setUrlParamsVersion((v) => v + 1);
     };
 
     handleUrlCheck();
@@ -60,14 +62,55 @@ export default function App() {
     return data;
   }, [rawToken]);
 
+  const urlQueryRsvp = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const sp = new URLSearchParams(window.location.search);
+    const rsvp = sp.get("rsvp");
+    if (rsvp === "0" || rsvp === "false") return false;
+    if (rsvp === "1" || rsvp === "true") return true;
+    return null;
+  }, [rawToken, urlParamsVersion]);
+
+  const urlLang = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const sp = new URLSearchParams(window.location.search);
+    const l = sp.get("l") || sp.get("lang");
+    if (l === "kn" || l === "kannada") return "kn";
+    if (l === "en" || l === "english") return "en";
+    return null;
+  }, [rawToken, urlParamsVersion]);
+
+  const urlRel = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const sp = new URLSearchParams(window.location.search);
+    const r = sp.get("rel") || sp.get("r");
+    if (r === "elder" || r === "1") return "elder";
+    if (r === "family" || r === "2") return "family";
+    if (r === "friend" || r === "3") return "friend";
+    return null;
+  }, [rawToken, urlParamsVersion]);
+
+  const urlMsg = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    const sp = new URLSearchParams(window.location.search);
+    return sp.get("msg") || sp.get("note") || sp.get("m");
+  }, [rawToken, urlParamsVersion]);
+
+  const initialShowRsvp = urlQueryRsvp !== null ? urlQueryRsvp : (invite.rsvp !== undefined ? invite.rsvp === 1 : true);
+
+  // Live override when RSVP is toggled in generator modal
+  const [liveShowRsvp, setLiveShowRsvp] = useState<boolean | null>(null);
+
+  // Bride name is always first by default: Yashaswini & Nischay
+  const groomFirst = false;
+
   // Invitee name: path param encoded in base64 takes highest precedence!
   const guestName = pathInvitee || invite.n || "Beloved Family & Friends";
-  const rel: RelationType = NUM_TO_REL[invite.r ?? 3] || "friend";
+  const rel: RelationType = (urlRel as RelationType) || (NUM_TO_REL[invite.r ?? 3] || "friend");
   const showCelebration = invite.cel !== 0;
-  const showRsvp = invite.rsvp !== 0;
+  const showRsvp = liveShowRsvp !== null ? liveShowRsvp : initialShowRsvp;
   const showBestWishes = invite.bw === 1;
-  const groomFirst = invite.gf !== 0; // Default groom first: Nischay & Yashaswini
-  const note = invite.m || "";
+  const note = urlMsg || invite.m || "";
   const honorific = invite.h || "";
 
   // Only show the top nav bar if the invitee name is NishuYashu
@@ -88,12 +131,14 @@ export default function App() {
 
   // Set initial language if payload specifies 'kn' or 'en'
   useEffect(() => {
-    if (invite.l === "kn") {
+    if (urlLang) {
+      setLang(urlLang);
+    } else if (invite.l === "kn") {
       setLang("kn");
     } else {
       setLang("en");
     }
-  }, [invite.l]);
+  }, [urlLang, invite.l]);
 
   // Background Audio Controller for romantic-vows.mp3
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -187,18 +232,14 @@ export default function App() {
 
   // Quick preset loader helper
   const loadPreset = (preset: { name: string; rel: RelationType; lang?: "kn" | "en" }) => {
-    const newToken = encodeInvite({
-      name: preset.name,
-      rel: preset.rel,
-      lang: preset.lang || "kn",
-      showCelebration: true,
-      showRsvp: true,
-      groomFirst: true,
-    });
-    setRawToken(newToken);
-    if (preset.lang) setLang(preset.lang);
     const b64 = encodeBase64Name(preset.name);
-    window.history.replaceState(null, "", `/${b64}?d=${newToken}`);
+    const q: string[] = [];
+    if (preset.lang === "kn") q.push("l=kn");
+    if (preset.rel && preset.rel !== "friend") q.push(`rel=${preset.rel}`);
+    const searchStr = q.length > 0 ? `?${q.join("&")}` : "";
+    window.history.replaceState(null, "", `/${b64}${searchStr}`);
+    setPathInvitee(preset.name);
+    if (preset.lang) setLang(preset.lang);
   };
 
   const isKn = lang === "kn";
@@ -363,6 +404,8 @@ export default function App() {
       <InviteGeneratorModal
         isOpen={isGeneratorOpen}
         onClose={() => setIsGeneratorOpen(false)}
+        initialShowRsvp={showRsvp}
+        onShowRsvpChange={(val) => setLiveShowRsvp(val)}
       />
 
       {/* BACKGROUND MUSIC (romantic-vows.mp3) */}

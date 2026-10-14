@@ -78,11 +78,11 @@ export function encodeInvite(params: {
   if (params.lang === "kn" || params.lang === "te") {
     payload.l = "kn";
   }
-  if (params.showCelebration) payload.cel = 1;
-  if (params.showRsvp) payload.rsvp = 1;
+  if (params.showCelebration !== undefined) payload.cel = params.showCelebration ? 1 : 0;
+  if (params.showRsvp !== undefined) payload.rsvp = params.showRsvp ? 1 : 0;
   if (params.autoScroll) payload.as = 1;
   if (params.blessing) payload.bw = 1;
-  if (params.groomFirst) payload.gf = 1;
+  if (params.groomFirst !== undefined) payload.gf = params.groomFirst ? 1 : 0;
   if (params.autoTour) payload.tr = 1;
   if (params.note && params.note.trim()) {
     payload.m = params.note.trim().slice(0, 140);
@@ -133,12 +133,12 @@ export function decodeInvite(token: string): InvitePayload {
     const rel = Number(raw.r);
     if (rel >= 1 && rel <= 3) result.r = rel;
     if (raw.l === "kn" || raw.l === "te") result.l = "kn";
-    if (raw.cel === 1) result.cel = 1;
-    if (raw.rsvp === 1) result.rsvp = 1;
-    if (raw.as === 1) result.as = 1;
-    if (raw.bw === 1) result.bw = 1;
-    if (raw.gf === 1) result.gf = 1;
-    if (raw.tr === 1) result.tr = 1;
+    if (typeof raw.cel === "number") result.cel = raw.cel;
+    if (typeof raw.rsvp === "number") result.rsvp = raw.rsvp;
+    if (typeof raw.as === "number") result.as = raw.as;
+    if (typeof raw.bw === "number") result.bw = raw.bw;
+    if (typeof raw.gf === "number") result.gf = raw.gf;
+    if (typeof raw.tr === "number") result.tr = raw.tr;
     if (typeof raw.m === "string") result.m = raw.m.slice(0, 140);
     if (typeof raw.h === "string") result.h = raw.h.slice(0, 16);
 
