@@ -216,7 +216,7 @@ export function decodeBase64String(raw: string): string | null {
 export function getInviteeNameFromUrl(): string | null {
   if (typeof window === "undefined") return null;
 
-  // 1. Check path parameter
+  // 1. Check path parameter (e.g. /TmlzaHVZYXNodQ==)
   try {
     const pathname = window.location.pathname || "";
     const cleanPath = pathname.split("?")[0].split("#")[0];
@@ -228,7 +228,9 @@ export function getInviteeNameFromUrl(): string | null {
         if (
           !seg ||
           seg.includes(".") ||
-          ["invitation", "invite", "wedding", "card", "app", "home"].includes(seg.toLowerCase())
+          ["invitation", "invite", "wedding", "card", "app", "home"].includes(
+            seg.toLowerCase()
+          )
         ) {
           continue;
         }
@@ -248,17 +250,69 @@ export function getInviteeNameFromUrl(): string | null {
     console.warn("Could not parse path param:", err);
   }
 
-  // 2. Check query params fallback (?name=..., ?to=..., ?guest=...)
+  // 2. Check query params (including GitHub Pages SPA redirect format `?/TmlzaHVZYXNodQ==` or `?to=...`)
   try {
-    const sp = new URLSearchParams(window.location.search);
+    const search = window.location.search || "";
+    if (search.startsWith("?/")) {
+      const redirectedPath = search.slice(2).split("&")[0].split("?")[0].replace(/^\/+/, "");
+      const decoded = decodeBase64String(decodeURIComponent(redirectedPath));
+      if (decoded) return decoded;
+      if (/^[\p{L}\p{N}\s.,&'()-]{2,60}$/u.test(redirectedPath)) {
+        return decodeURIComponent(redirectedPath).trim();
+      }
+    }
+
+    const sp = new URLSearchParams(search);
     const queryCandidate =
       sp.get("name") || sp.get("to") || sp.get("guest") || sp.get("invitee") || sp.get("n");
 
     if (queryCandidate) {
-      const decoded = decodeBase64String(queryCandidate);
+      const decoded = decodeBase64String(decodeURIComponent(queryCandidate));
       if (decoded) return decoded;
       if (/^[\p{L}\p{N}\s.,&'()-]{2,60}$/u.test(queryCandidate)) {
-        return queryCandidate.trim();
+        return decodeURIComponent(queryCandidate).trim();
+      }
+    }
+
+    // Check all keys and values in search string (e.g. ?TmlzaHVZYXNodQ== or ?TmlzaHVZYXNodQ)
+    const cleanSearch = search.replace(/^\?/, "");
+    if (cleanSearch) {
+      const parts = cleanSearch.split("&");
+      for (const part of parts) {
+        if (!part) continue;
+        const decodedPart = decodeURIComponent(part).trim();
+        // Direct decode of token e.g. TmlzaHVZYXNodQ==
+        const direct = decodeBase64String(decodedPart.replace(/^\/+/, ""));
+        if (direct) return direct;
+
+        // If part is key=val
+        const eqIdx = decodedPart.indexOf("=");
+        if (eqIdx !== -1) {
+          const k = decodedPart.slice(0, eqIdx).trim();
+          const v = decodedPart.slice(eqIdx + 1).trim();
+          // Avoid decoding the standard token 'd' as a name
+          if (k !== "d") {
+            const dv = decodeBase64String(v);
+            if (dv) return dv;
+            const dk = decodeBase64String(k);
+            if (dk) return dk;
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Could not parse search param:", err);
+  }
+
+  // 3. Check hash fragment (e.g. #/TmlzaHVZYXNodQ== or #TmlzaHVZYXNodQ==)
+  try {
+    const hash = window.location.hash || "";
+    const cleanHash = hash.replace(/^#\/?/, "").split("?")[0].replace(/^\/+/, "");
+    if (cleanHash) {
+      const decoded = decodeBase64String(decodeURIComponent(cleanHash));
+      if (decoded) return decoded;
+      if (/^[\p{L}\p{N}\s.,&'()-]{2,60}$/u.test(cleanHash)) {
+        return decodeURIComponent(cleanHash).trim();
       }
     }
   } catch {

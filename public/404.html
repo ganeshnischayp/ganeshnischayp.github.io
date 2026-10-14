@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nischay & Yashaswini — Wedding Invitation</title>
+    <script type="text/javascript">
+      // GitHub Pages SPA router for path params (e.g. /TmlzaHVZYXNodQ==)
+      (function() {
+        var l = window.location;
+        var pathname = l.pathname || '';
+        var segments = pathname.split('/').filter(Boolean);
+
+        // Determine if hosted on username.github.io (0 repo prefix) or username.github.io/repo (1 repo prefix)
+        // Check if first segment is a known base path or token
+        var isSubRepo = false;
+        if (l.hostname.endsWith('github.io') && segments.length > 1) {
+          // If first segment does NOT look like a base64 string or invitee name
+          isSubRepo = true;
+        }
+
+        var repoPrefix = isSubRepo ? '/' + segments[0] : '';
+        var targetToken = segments.length > 0 ? segments[segments.length - 1] : '';
+
+        // Redirect to root index.html with query parameter
+        var targetUrl = l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') + repoPrefix + '/';
+        var query = [];
+        if (targetToken) {
+          query.push('to=' + encodeURIComponent(targetToken));
+        }
+        if (l.search) {
+          var cleanSearch = l.search.replace(/^\?/, '');
+          if (cleanSearch) query.push(cleanSearch);
+        }
+
+        var queryString = query.length > 0 ? '?' + query.join('&') : '';
+        var fullRedirect = targetUrl + queryString + l.hash;
+
+        l.replace(fullRedirect);
+      })();
+    </script>
+  </head>
+  <body style="background:#f5f0e6;margin:0;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif;color:#6B2D2A;">
+    <p>Opening Wedding Invitation...</p>
+  </body>
+</html>

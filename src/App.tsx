@@ -31,9 +31,18 @@ export default function App() {
   const [isGeneratorOpen, setIsGeneratorOpen] = useState(false);
   const [lang, setLang] = useState<"en" | "kn">("en");
 
-  // Read invitee name encoded in base64 format from URL path parameter (e.g. /UmFtZXNo)
-  const pathInvitee = useMemo(() => {
-    return getInviteeNameFromUrl();
+  // Read invitee name encoded in base64 format from URL path parameter (e.g. /UmFtZXNo, /TmlzaHVZYXNodQ==)
+  const [pathInvitee, setPathInvitee] = useState<string | null>(() => getInviteeNameFromUrl());
+
+  useEffect(() => {
+    const handleUrlCheck = () => {
+      const current = getInviteeNameFromUrl();
+      if (current) setPathInvitee(current);
+    };
+
+    handleUrlCheck();
+    window.addEventListener("popstate", handleUrlCheck);
+    return () => window.removeEventListener("popstate", handleUrlCheck);
   }, []);
 
   // Read search params

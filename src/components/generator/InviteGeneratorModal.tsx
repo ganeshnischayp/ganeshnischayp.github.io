@@ -32,9 +32,18 @@ export function InviteGeneratorModal({ isOpen, onClose }: InviteGeneratorModalPr
   });
 
   const b64Name = name.trim() ? encodeBase64Name(name.trim()) : "";
+  const baseOrigin = (() => {
+    if (typeof window === "undefined") return "";
+    const origin = window.location.origin;
+    const segments = window.location.pathname.split("/").filter(Boolean);
+    if (window.location.hostname.endsWith("github.io") && segments.length > 1) {
+      return `${origin}/${segments[0]}`;
+    }
+    return origin;
+  })();
   const fullUrl = b64Name
-    ? `${window.location.origin}/${b64Name}?d=${token}`
-    : `${window.location.origin}/?d=${token}`;
+    ? `${baseOrigin}/${b64Name}?d=${token}`
+    : `${baseOrigin}/?d=${token}`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(fullUrl);

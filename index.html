@@ -12,6 +12,31 @@
     <meta name="twitter:title" content="Nischay & Yashaswini — Wedding Invitation" />
     <meta name="twitter:description" content="You're warmly invited to celebrate Nischay & Yashaswini on November 25 & 26, 2026, Channarayapatna." />
     <link rel="icon" href="/favicon.ico" />
+    <!-- Single Page Apps for GitHub Pages redirect receiver -->
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        } else if (l.search && l.search.indexOf('to=') !== -1) {
+          try {
+            var sp = new URLSearchParams(l.search);
+            var to = sp.get('to');
+            if (to) {
+              var prefix = l.pathname.replace(/\/+$/, '');
+              sp.delete('to');
+              var remaining = sp.toString();
+              var newUrl = (prefix || '') + '/' + to + (remaining ? '?' + remaining : '') + l.hash;
+              window.history.replaceState(null, null, newUrl);
+            }
+          } catch (e) {}
+        }
+      }(window.location));
+    </script>
     <!-- Google Fonts including Kannada & Elegant Display fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
