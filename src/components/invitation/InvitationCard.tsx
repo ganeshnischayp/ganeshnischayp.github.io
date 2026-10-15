@@ -432,6 +432,41 @@ export function InvitationCard({
                   </div>
                 </button>
               </div>
+
+              {/* Embedded Map Panel (immediately below Preview Map button) */}
+              <AnimatePresence>
+                {showMapPreview && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    className="overflow-hidden mt-3 max-w-sm mx-auto md:mx-0"
+                  >
+                    <div className="rounded-2xl overflow-hidden border border-[#c9a776]/40 shadow-sm bg-[#FDFBF7]">
+                      <iframe
+                        title="Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna"
+                        src={VENUE_EMBED_URL}
+                        className="w-full h-64 border-0 block"
+                        loading="lazy"
+                      />
+                      <div className="p-2.5 bg-[#FDFBF7] border-t border-[#c9a776]/25 flex items-center justify-between">
+                        <span className="text-[11px] font-sans text-muted-foreground truncate mr-2">
+                          {isKn ? VENUE_NAME_KN : VENUE_NAME}
+                        </span>
+                        <a
+                          href={VENUE_MAPS_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] font-sans font-semibold text-[#6B2D2A] hover:underline uppercase tracking-wider shrink-0"
+                        >
+                          {t("map.view", lang)} →
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -467,25 +502,6 @@ export function InvitationCard({
             )}
           </div>
         </div>
-
-        {/* Embedded Map Panel (when expanded) */}
-        <AnimatePresence>
-          {showMapPreview && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden mb-16 -mt-4"
-            >
-              <iframe
-                title="Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna"
-                src={VENUE_EMBED_URL}
-                className="w-full h-64 border-0 rounded-2xl block ring-1 ring-[#c9a776]/40 shadow-sm"
-                loading="lazy"
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {/* Divider with gold emblem */}
         <div className="relative my-12 flex items-center justify-center">
