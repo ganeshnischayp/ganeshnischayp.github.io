@@ -306,278 +306,177 @@ export function InvitationCard({
         {/* Interactive Scratch-to-Reveal Date & Countdown Square */}
         <ScratchDateCard lang={lang} />
 
-        {/* 2-Column Section: When/Where & The Day Timeline */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mb-16">
-          {/* Left Column: 2 Distinct Padded Buttons with Name When and Where */}
-          <div className="space-y-5 text-center md:text-left">
-            {/* The 2 Buttons with Padding */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {/* WHEN BUTTON */}
-              <button
-                type="button"
-                onClick={() => setWhenOpen((prev) => !prev)}
-                aria-expanded={whenOpen}
-                className={`w-full flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3.5 sm:py-4 rounded-xl border text-base sm:text-lg font-serif font-medium transition-all shadow-xs cursor-pointer select-none active:scale-[0.98] ${
-                  whenOpen
-                    ? "bg-[#6B2D2A] text-white border-[#6B2D2A] shadow-md ring-2 ring-[#c9a776]/40"
-                    : "bg-[#FFFDF9] text-[#6B2D2A] border-[#c9a776]/60 hover:bg-[#F3E5C8]/50 hover:border-[#b8924f]"
-                }`}
-              >
-                <CalendarDays className={`w-4 h-4 shrink-0 ${whenOpen ? "text-[#f5d799]" : "text-[#b8924f]"}`} />
-                <span>{t("when.label", lang)}</span>
-                <ChevronDown
-                  className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
-                    whenOpen ? "rotate-180 text-[#f5d799]" : "rotate-0 text-[#b8924f]"
-                  }`}
-                />
-              </button>
-
-              {/* WHERE BUTTON */}
-              <button
-                type="button"
-                onClick={() => setWhereOpen((prev) => !prev)}
-                aria-expanded={whereOpen}
-                className={`w-full flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3.5 sm:py-4 rounded-xl border text-base sm:text-lg font-serif font-medium transition-all shadow-xs cursor-pointer select-none active:scale-[0.98] ${
-                  whereOpen
-                    ? "bg-[#6B2D2A] text-white border-[#6B2D2A] shadow-md ring-2 ring-[#c9a776]/40"
-                    : "bg-[#FFFDF9] text-[#6B2D2A] border-[#c9a776]/60 hover:bg-[#F3E5C8]/50 hover:border-[#b8924f]"
-                }`}
-              >
-                <MapPin className={`w-4 h-4 shrink-0 ${whereOpen ? "text-[#f5d799]" : "text-[#b8924f]"}`} />
-                <span>{t("where.label", lang)}</span>
-                <ChevronDown
-                  className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
-                    whereOpen ? "rotate-180 text-[#f5d799]" : "rotate-0 text-[#b8924f]"
-                  }`}
-                />
-              </button>
+        {/* Stacked When and Where Accordion Section (Timeline merged inside When) */}
+        <div className="max-w-2xl mx-auto space-y-4 mb-16">
+          {/* 1. WHEN BUTTON */}
+          <button
+            type="button"
+            onClick={() => setWhenOpen((prev) => !prev)}
+            aria-expanded={whenOpen}
+            className={`w-full flex items-center justify-between px-5 sm:px-7 py-3.5 sm:py-4 rounded-xl border text-base sm:text-lg font-serif font-medium transition-all shadow-xs cursor-pointer select-none active:scale-[0.99] ${
+              whenOpen
+                ? "bg-[#6B2D2A] text-white border-[#6B2D2A] shadow-md ring-2 ring-[#c9a776]/40"
+                : "bg-[#FFFDF9] text-[#6B2D2A] border-[#c9a776]/60 hover:bg-[#F3E5C8]/50 hover:border-[#b8924f]"
+            }`}
+          >
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <CalendarDays className={`w-4 h-4 sm:w-5 sm:h-5 shrink-0 ${whenOpen ? "text-[#f5d799]" : "text-[#b8924f]"}`} />
+              <span>{t("when.label", lang)}</span>
             </div>
+            <ChevronDown
+              className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
+                whenOpen ? "rotate-180 text-[#f5d799]" : "rotate-0 text-[#b8924f]"
+              }`}
+            />
+          </button>
 
-            {/* WHEN DETAILS (shows below when When button is clicked) */}
-            <AnimatePresence>
-              {whenOpen && (
-                <motion.div
-                  key="when-details"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="rounded-2xl border border-[#c9a776]/45 bg-[#FFFDF9] p-4 sm:p-6 space-y-4 shadow-sm text-left">
-                    {/* Header */}
-                    <div className="flex items-center gap-2 pb-2 border-b border-[#c9a776]/25">
-                      <CalendarDays className="w-4 h-4 text-[#8a6a33]" />
-                      <span className="font-sans uppercase tracking-[0.2em] text-[11px] text-[#8a6a33] font-medium">
-                        {t("when.label", lang)} · {isKn ? "ದಿನಾಂಕ ಮತ್ತು ಸಮಯ" : "Date & Schedule"}
-                      </span>
-                    </div>
-
-                    {/* Event 1: Reception */}
-                    <div className="p-4 sm:p-5 rounded-xl bg-white/90 border border-[#c9a776]/35 text-left space-y-1.5 shadow-2xs">
-                      <div className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-[#b8924f]" />
-                        <span className="font-sans text-[11px] uppercase tracking-wider text-[#8a6a33] font-medium">
-                          {isKn ? "ವರೋಪಚಾರ & ಆರತಕ್ಷತೆ" : "Grand Reception"}
-                        </span>
-                      </div>
-                      <p
-                        className="text-lg sm:text-xl font-medium text-[#4A1F1D] leading-snug"
-                        style={{
-                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                        }}
-                      >
-                        {isKn ? "2026 ನವೆಂಬರ್ 25, ಬುಧವಾರ" : "Wednesday, 25th Nov 2026"}
-                      </p>
-                      <div className="pt-1.5 border-t border-[#c9a776]/20 flex flex-col gap-0.5 text-sm">
-                        <span className="text-[#6B2D2A] font-medium">
-                          {isKn ? "ಸಂಜೆ 7:00 ಗಂಟೆಯಿಂದ" : "7:00 PM onwards"}
-                        </span>
-                        <span className="text-[#5C5248]">
-                          {isKn ? "ಶುಭಾಶಯ ಸ್ವೀಕಾರ & ಪ್ರೀತಿಯ ಭೋಜನ" : "Greetings, Welcoming & Grand Dinner"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Event 2: Shubha Muhurtha - Clean new lines on mobile, gentle elegant text without heavy bolding */}
-                    <div className="p-4 sm:p-5 rounded-xl bg-white/90 border border-[#c9a776]/45 text-left space-y-1.5 shadow-2xs">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-sm">💍</span>
-                        <span className="font-sans text-[11px] uppercase tracking-wider text-[#8a6a33] font-medium">
-                          {isKn ? "ಶುಭ ಮುಹೂರ್ತ (ಮಾಂಗಲ್ಯ ಧಾರಣೆ)" : "Shubha Muhurtha"}
-                        </span>
-                      </div>
-
-                      {/* Date */}
-                      <p
-                        className="text-lg sm:text-xl font-medium text-[#4A1F1D] leading-snug"
-                        style={{
-                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                        }}
-                      >
-                        {isKn ? "2026 ನವೆಂಬರ್ 26, ಗುರುವಾರ" : "Thursday, 26th Nov 2026"}
-                      </p>
-
-                      {/* Time Details: Coming on clean new lines on mobile without shouting bold letters */}
-                      <div className="pt-1.5 border-t border-[#c9a776]/20 flex flex-col gap-0.5 text-sm">
-                        {/* Line 1: Time */}
-                        <span className="text-base text-[#6B2D2A] font-medium">
-                          {isKn ? "ಬೆಳಗ್ಗೆ 8:45 ರಿಂದ 9:30 ರವರೆಗೆ" : "8:45 AM to 9:30 AM"}
-                        </span>
-
-                        {/* Line 2: Dhanur Lagna (on new line on mobile) */}
-                        <span className="text-[#8C531B]">
-                          {isKn ? "(ಧನುರ್ ಲಗ್ನ ಸುಮುಹೂರ್ತದಲ್ಲಿ)" : "(Dhanur Lagna)"}
-                        </span>
-
-                        {/* Line 3: Mangalya Dharana (on new line on mobile) */}
-                        <span className="text-[#4A3D36]">
-                          {isKn ? "ಮಾಂಗಲ್ಯ ಧಾರಣ ಮಹೋತ್ಸವ" : "Mangalya Dharana"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Quick Add to Calendar Action */}
-                    <div className="pt-2 flex flex-wrap gap-2">
-                      <span className="w-full text-[10px] font-sans uppercase tracking-wider text-[#8a6a33] font-medium">
-                        {isKn ? "ಕ್ಯಾಲೆಂಡರ್ಗೆ ಸೇರಿಸಿ:" : "Add to Calendar:"}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handleCalendarExport("google")}
-                        className="px-3.5 py-1.5 rounded-lg border border-[#c9a776]/40 text-xs font-sans tracking-wide hover:bg-[#c9a776]/15 bg-white text-[#6B2D2A] transition-colors cursor-pointer shadow-2xs"
-                      >
-                        Google
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleCalendarExport("apple")}
-                        className="px-3.5 py-1.5 rounded-lg border border-[#c9a776]/40 text-xs font-sans tracking-wide hover:bg-[#c9a776]/15 bg-white text-[#6B2D2A] transition-colors cursor-pointer shadow-2xs"
-                      >
-                        Apple
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleCalendarExport("outlook")}
-                        className="px-3.5 py-1.5 rounded-lg border border-[#c9a776]/40 text-xs font-sans tracking-wide hover:bg-[#c9a776]/15 bg-white text-[#6B2D2A] transition-colors cursor-pointer shadow-2xs"
-                      >
-                        Outlook
-                      </button>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* WHERE DETAILS (shows below when Where button is clicked) */}
-            <AnimatePresence>
-              {whereOpen && (
-                <motion.div
-                  key="where-details"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.35, ease: "easeInOut" }}
-                  className="overflow-hidden"
-                >
-                  <div className="rounded-2xl border border-[#c9a776]/45 bg-[#FFFDF9] p-4 sm:p-6 space-y-4 shadow-sm text-left">
-                    {/* Header */}
-                    <div className="flex items-center gap-2 pb-2 border-b border-[#c9a776]/25">
-                      <MapPin className="w-4 h-4 text-[#8a6a33]" />
-                      <span className="font-sans uppercase tracking-[0.2em] text-[11px] text-[#8a6a33] font-medium">
-                        {t("where.label", lang)} · {isKn ? "ಸ್ಥಳ & ವಿಳಾಸ" : "Venue & Location"}
-                      </span>
-                    </div>
-
-                    {/* Venue Name & Address */}
-                    <div className="space-y-1">
-                      <p
-                        className="text-lg sm:text-xl text-[#4A1F1D] font-medium leading-tight"
-                        style={{
-                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                        }}
-                      >
-                        {isKn ? VENUE_NAME_KN : VENUE_NAME}
-                      </p>
-                      <p
-                        className="text-sm text-[#4A3D36] leading-relaxed pt-0.5"
-                        style={{
-                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                        }}
-                      >
-                        {isKn ? (
-                          <>
-                            ಬಿ.ಎಂ. ರಸ್ತೆ, ಚನ್ನರಾಯಪಟ್ಟಣ, ಹಾಸನ ಜಿಲ್ಲೆ,{" "}
-                            <span className="whitespace-nowrap">ಕರ್ನಾಟಕ 573116</span>
-                          </>
-                        ) : (
-                          <>
-                            B.M. Road, Channarayapatna, Hassan District,{" "}
-                            <span className="whitespace-nowrap">Karnataka 573116</span>
-                          </>
-                        )}
-                      </p>
-                    </div>
-
-                    {/* View on Google Maps Link Button */}
-                    <div>
-                      <a
-                        href={VENUE_MAPS_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#6B2D2A] text-white hover:bg-[#853733] font-sans font-medium text-xs uppercase tracking-wider transition-colors shadow-xs"
-                      >
-                        <span>{t("map.view", lang)}</span>
-                        <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
-                    </div>
-
-                    {/* Embedded Map Panel */}
-                    <div className="rounded-2xl overflow-hidden border border-[#c9a776]/40 shadow-xs bg-white">
-                      <iframe
-                        title="Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna"
-                        src={VENUE_EMBED_URL}
-                        className="w-full h-52 sm:h-60 border-0 block"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Right Column: Timeline & Optional Best Wishes */}
-          <div>
-            <TimelineItinerary lang={lang} />
-
-            {showBestWishes && (
-              <div className="mt-10 pt-6 border-t border-[#c9a776]/25 text-center md:text-left">
-                <p className="font-sans uppercase tracking-[0.18em] text-[10px] text-[#b8924f] mb-3">
-                  {isKn ? "ಹಾರೈಕೆಗಳು" : "Best Wishes from"}
-                </p>
-                <div className="flex justify-center md:justify-start gap-8 sm:gap-12">
-                  {BEST_WISHES.map((col, idx) => (
-                    <ul key={idx} className="space-y-1.5 text-left">
-                      {col.map((person) => (
-                        <li
-                          key={person}
-                          className="text-base sm:text-lg text-foreground/85 leading-snug"
-                          style={{
-                            fontFamily: isKn
-                              ? "var(--font-kannada)"
-                              : "var(--font-serif)",
-                          }}
-                        >
-                          {person}
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
+          {/* 2. WHEN CONTENT (Timeline Itinerary & Wedding Events merged inside) */}
+          <AnimatePresence>
+            {whenOpen && (
+              <motion.div
+                key="when-details"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="rounded-2xl border border-[#c9a776]/45 bg-[#FFFDF9] p-4 sm:p-6 shadow-sm text-left">
+                  <TimelineItinerary
+                    lang={lang}
+                    onCalendarExport={handleCalendarExport}
+                  />
                 </div>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </AnimatePresence>
+
+          {/* 3. WHERE BUTTON (appears below When button & When content) */}
+          <button
+            type="button"
+            onClick={() => setWhereOpen((prev) => !prev)}
+            aria-expanded={whereOpen}
+            className={`w-full flex items-center justify-between px-5 sm:px-7 py-3.5 sm:py-4 rounded-xl border text-base sm:text-lg font-serif font-medium transition-all shadow-xs cursor-pointer select-none active:scale-[0.99] ${
+              whereOpen
+                ? "bg-[#6B2D2A] text-white border-[#6B2D2A] shadow-md ring-2 ring-[#c9a776]/40"
+                : "bg-[#FFFDF9] text-[#6B2D2A] border-[#c9a776]/60 hover:bg-[#F3E5C8]/50 hover:border-[#b8924f]"
+            }`}
+          >
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <MapPin className={`w-4 h-4 sm:w-5 sm:h-5 shrink-0 ${whereOpen ? "text-[#f5d799]" : "text-[#b8924f]"}`} />
+              <span>{t("where.label", lang)}</span>
+            </div>
+            <ChevronDown
+              className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
+                whereOpen ? "rotate-180 text-[#f5d799]" : "rotate-0 text-[#b8924f]"
+              }`}
+            />
+          </button>
+
+          {/* 4. WHERE CONTENT (appears immediately below Where button when clicked) */}
+          <AnimatePresence>
+            {whereOpen && (
+              <motion.div
+                key="where-details"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.35, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <div className="rounded-2xl border border-[#c9a776]/45 bg-[#FFFDF9] p-4 sm:p-6 space-y-4 shadow-sm text-left">
+                  {/* Header */}
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#c9a776]/25">
+                    <MapPin className="w-4 h-4 text-[#8a6a33]" />
+                    <span className="font-sans uppercase tracking-[0.2em] text-[11px] text-[#8a6a33] font-medium">
+                      {t("where.label", lang)} · {isKn ? "ಸ್ಥಳ & ವಿಳಾಸ" : "Venue & Location"}
+                    </span>
+                  </div>
+
+                  {/* Venue Name & Address */}
+                  <div className="space-y-1">
+                    <p
+                      className="text-lg sm:text-xl text-[#4A1F1D] font-medium leading-tight"
+                      style={{
+                        fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
+                      }}
+                    >
+                      {isKn ? VENUE_NAME_KN : VENUE_NAME}
+                    </p>
+                    <p
+                      className="text-sm text-[#4A3D36] leading-relaxed pt-0.5"
+                      style={{
+                        fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
+                      }}
+                    >
+                      {isKn ? (
+                        <>
+                          ಬಿ.ಎಂ. ರಸ್ತೆ, ಚನ್ನರಾಯಪಟ್ಟಣ, ಹಾಸನ ಜಿಲ್ಲೆ,{" "}
+                          <span className="whitespace-nowrap">ಕರ್ನಾಟಕ 573116</span>
+                        </>
+                      ) : (
+                        <>
+                          B.M. Road, Channarayapatna, Hassan District,{" "}
+                          <span className="whitespace-nowrap">Karnataka 573116</span>
+                        </>
+                      )}
+                    </p>
+                  </div>
+
+                  {/* View on Google Maps Link Button */}
+                  <div>
+                    <a
+                      href={VENUE_MAPS_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#6B2D2A] text-white hover:bg-[#853733] font-sans font-medium text-xs uppercase tracking-wider transition-colors shadow-xs"
+                    >
+                      <span>{t("map.view", lang)}</span>
+                      <ExternalLink className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+
+                  {/* Embedded Map Panel */}
+                  <div className="rounded-2xl overflow-hidden border border-[#c9a776]/40 shadow-xs bg-white">
+                    <iframe
+                      title="Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna"
+                      src={VENUE_EMBED_URL}
+                      className="w-full h-52 sm:h-60 border-0 block"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Optional Best Wishes */}
+          {showBestWishes && (
+            <div className="mt-10 pt-6 border-t border-[#c9a776]/25 text-center">
+              <p className="font-sans uppercase tracking-[0.18em] text-[10px] text-[#b8924f] mb-3">
+                {isKn ? "ಹಾರೈಕೆಗಳು" : "Best Wishes from"}
+              </p>
+              <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
+                {BEST_WISHES.map((col, idx) => (
+                  <ul key={idx} className="space-y-1.5 text-center sm:text-left">
+                    {col.map((person) => (
+                      <li
+                        key={person}
+                        className="text-base sm:text-lg text-foreground/85 leading-snug"
+                        style={{
+                          fontFamily: isKn
+                            ? "var(--font-kannada)"
+                            : "var(--font-serif)",
+                        }}
+                      >
+                        {person}
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Divider with gold emblem */}

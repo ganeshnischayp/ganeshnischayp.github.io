@@ -13,6 +13,7 @@ import { DoorScene } from "./components/invitation/DoorScene";
 import { InvitationCard } from "./components/invitation/InvitationCard";
 import { RsvpModal } from "./components/invitation/RsvpModal";
 import { InviteGeneratorModal } from "./components/generator/InviteGeneratorModal";
+import { triggerWeddingArrivalConfetti } from "./lib/confetti";
 import { t } from "./data/i18n";
 
 // Default token for Nischay & Yashaswini wedding
@@ -219,6 +220,16 @@ export default function App() {
       setPhase("card");
     }, 2000);
   }, [phase, hasUserToggled]);
+
+  // Automatically trigger royal canvas confetti explosion when the door opens and invite is fully loaded
+  useEffect(() => {
+    if (phase === "card") {
+      const timer = setTimeout(() => {
+        triggerWeddingArrivalConfetti();
+      }, 350);
+      return () => clearTimeout(timer);
+    }
+  }, [phase]);
 
   // Close the door / Seal & Return
   const handleCloseDoor = useCallback(() => {
