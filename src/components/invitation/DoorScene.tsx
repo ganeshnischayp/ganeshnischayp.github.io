@@ -11,6 +11,11 @@ interface DoorSceneProps {
   rel?: string;
 }
 
+// Door Scene Background:
+// Reverted back to the original scene-alt4.jpg as requested.
+// (mysore-heritage-twilight.svg is also preserved in public/images/einvitation/ for future use)
+const DOOR_SCENE_BACKGROUND = "/images/einvitation/scene-alt4.jpg";
+
 export function DoorScene({
   phase,
   onTapDoor,
@@ -144,7 +149,7 @@ export function DoorScene({
       <div
         className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-screen pointer-events-none transition-transform duration-1000 ease-out"
         style={{
-          backgroundImage: "url(/images/einvitation/scene-alt4.jpg)",
+          backgroundImage: `url(${DOOR_SCENE_BACKGROUND})`,
           transform: isOpening ? "scale(1.2)" : "scale(1)",
         }}
       />

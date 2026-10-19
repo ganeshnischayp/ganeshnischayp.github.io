@@ -7,6 +7,7 @@ import {
   ChevronDown,
   Sparkles,
   ArrowLeft,
+  ExternalLink,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { Monogram } from "./Monogram";
@@ -64,7 +65,8 @@ export function InvitationCard({
   showRsvp,
   onCloseDoor,
 }: InvitationCardProps) {
-  const [showMapPreview, setShowMapPreview] = useState(false);
+  const [whenOpen, setWhenOpen] = useState(false);
+  const [whereOpen, setWhereOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
   const isKn = lang === "kn" || lang === "te";
@@ -234,18 +236,23 @@ export function InvitationCard({
               </h1>
 
               {isKn ? (
-                <p
-                  className="leading-[1.5] font-semibold golden-wave-hover"
-                  style={{
-                    fontFamily: "var(--font-kannada-display)",
-                    fontSize: "clamp(1.85rem, 7vw, 3.75rem)",
-                  }}
-                >
-                  {coupleKn}
-                </p>
+                <>
+                  <p
+                    className="leading-[1.5] font-semibold golden-wave-hover"
+                    style={{
+                      fontFamily: "var(--font-kannada-display)",
+                      fontSize: "clamp(1.85rem, 7vw, 3.75rem)",
+                    }}
+                  >
+                    {coupleKn}
+                  </p>
+                  <p className="text-xs md:text-sm font-sans uppercase tracking-[0.22em] text-[#8a6a33] font-semibold pt-1 transition-colors duration-300 group-hover:text-[#b8860b]">
+                    ಪವಿತ್ರ ವಿವಾಹ ಬಂಧನ · ಶುಭ ಸಮಾರಂಭ
+                  </p>
+                </>
               ) : (
                 <p className="text-xs md:text-sm font-sans uppercase tracking-[0.25em] text-[#8a6a33] font-semibold pt-1 transition-colors duration-300 group-hover:text-[#b8860b]">
-                  November 25 & 26, 2026 · Channarayapatna
+                  A Sacred Union · Wedding Celebration
                 </p>
               )}
             </div>
@@ -301,173 +308,243 @@ export function InvitationCard({
 
         {/* 2-Column Section: When/Where & The Day Timeline */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mb-16">
-          {/* Left Column: When & Where */}
-          <div className="space-y-10 text-center md:text-left">
-            {/* When: Reception & Muhurtha Highlights */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 justify-center md:justify-start">
-                <CalendarDays className="w-4 h-4 text-[#b8924f]" strokeWidth={1.5} />
-                <h4 className="font-sans uppercase tracking-[0.24em] text-[11px] text-[#b8924f]">
-                  {t("when.label", lang)}
-                </h4>
-              </div>
+          {/* Left Column: 2 Distinct Padded Buttons with Name When and Where */}
+          <div className="space-y-5 text-center md:text-left">
+            {/* The 2 Buttons with Padding */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              {/* WHEN BUTTON */}
+              <button
+                type="button"
+                onClick={() => setWhenOpen((prev) => !prev)}
+                aria-expanded={whenOpen}
+                className={`w-full flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3.5 sm:py-4 rounded-xl border text-base sm:text-lg font-serif font-medium transition-all shadow-xs cursor-pointer select-none active:scale-[0.98] ${
+                  whenOpen
+                    ? "bg-[#6B2D2A] text-white border-[#6B2D2A] shadow-md ring-2 ring-[#c9a776]/40"
+                    : "bg-[#FFFDF9] text-[#6B2D2A] border-[#c9a776]/60 hover:bg-[#F3E5C8]/50 hover:border-[#b8924f]"
+                }`}
+              >
+                <CalendarDays className={`w-4 h-4 shrink-0 ${whenOpen ? "text-[#f5d799]" : "text-[#b8924f]"}`} />
+                <span>{t("when.label", lang)}</span>
+                <ChevronDown
+                  className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
+                    whenOpen ? "rotate-180 text-[#f5d799]" : "rotate-0 text-[#b8924f]"
+                  }`}
+                />
+              </button>
 
-              {/* Event 1: Reception */}
-              <div className="p-4 rounded-xl bg-[#FDFBF7]/70 border border-[#c9a776]/35 text-left space-y-1 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#6B2D2A]" />
-                  <span className="font-sans text-xs uppercase tracking-wider font-bold text-[#6B2D2A]">
-                    {isKn ? "ವರೋಪಚಾರ & ಆರತಕ್ಷತೆ" : "Reception"}
-                  </span>
-                </div>
-                <p
-                  className="text-xl font-bold text-foreground/90"
-                  style={{
-                    fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                  }}
-                >
-                  {isKn ? "2026 ನವೆಂಬರ್ 25, ಬುಧವಾರ" : "Wednesday, 25th Nov 2026"}
-                </p>
-                <p className="text-sm text-muted-foreground font-medium">
-                  {isKn ? "ಸಂಜೆ 7:00 ಗಂಟೆಯಿಂದ" : "7:00 PM onwards"}
-                </p>
-              </div>
-
-              {/* Event 2: Shubha Muhurtha */}
-              <div className="p-4 rounded-xl bg-[#FDFBF7]/70 border border-[#c9a776]/35 text-left space-y-1 shadow-xs">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">💍</span>
-                  <span className="font-sans text-xs uppercase tracking-wider font-bold text-[#6B2D2A]">
-                    {isKn ? "ಶುಭ ಮುಹೂರ್ತ (ಮಾಂಗಲ್ಯ ಧಾರಣೆ)" : "Shubha Muhurtha"}
-                  </span>
-                </div>
-                <p
-                  className="text-xl font-bold text-foreground/90"
-                  style={{
-                    fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                  }}
-                >
-                  {isKn ? "2026 ನವೆಂಬರ್ 26, ಗುರುವಾರ" : "Thursday, 26th Nov 2026"}
-                </p>
-                <p className="text-sm text-muted-foreground font-medium">
-                  {isKn
-                    ? "ಬೆಳಗ್ಗೆ 8:45 ರಿಂದ 9:30 ರವರೆಗೆ (ಧನುರ್ ಲಗ್ನದಲ್ಲಿ)"
-                    : "8:45 AM to 9:30 AM (Dhanur Lagna)"}
-                </p>
-              </div>
+              {/* WHERE BUTTON */}
+              <button
+                type="button"
+                onClick={() => setWhereOpen((prev) => !prev)}
+                aria-expanded={whereOpen}
+                className={`w-full flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-3.5 sm:py-4 rounded-xl border text-base sm:text-lg font-serif font-medium transition-all shadow-xs cursor-pointer select-none active:scale-[0.98] ${
+                  whereOpen
+                    ? "bg-[#6B2D2A] text-white border-[#6B2D2A] shadow-md ring-2 ring-[#c9a776]/40"
+                    : "bg-[#FFFDF9] text-[#6B2D2A] border-[#c9a776]/60 hover:bg-[#F3E5C8]/50 hover:border-[#b8924f]"
+                }`}
+              >
+                <MapPin className={`w-4 h-4 shrink-0 ${whereOpen ? "text-[#f5d799]" : "text-[#b8924f]"}`} />
+                <span>{t("where.label", lang)}</span>
+                <ChevronDown
+                  className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
+                    whereOpen ? "rotate-180 text-[#f5d799]" : "rotate-0 text-[#b8924f]"
+                  }`}
+                />
+              </button>
             </div>
 
-            {/* Where: Savithramma Kariyappa Gowda Kalyana Mantapa */}
-            <div className="space-y-2">
-              <div className="flex items-center gap-2 justify-center md:justify-start">
-                <MapPin className="w-4 h-4 text-[#b8924f]" strokeWidth={1.5} />
-                <h4 className="font-sans uppercase tracking-[0.24em] text-[11px] text-[#b8924f]">
-                  {t("where.label", lang)}
-                </h4>
-              </div>
-              <p
-                className="text-2xl md:text-3xl text-foreground/90 font-bold leading-tight"
-                style={{
-                  fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                }}
-              >
-                {isKn ? VENUE_NAME_KN : VENUE_NAME}
-              </p>
-              <p
-                className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-md"
-                style={{
-                  fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
-                }}
-              >
-                {isKn ? (
-                  <>
-                    ಬಿ.ಎಂ. ರಸ್ತೆ, ಚನ್ನರಾಯಪಟ್ಟಣ, ಹಾಸನ ಜಿಲ್ಲೆ,{" "}
-                    <span className="whitespace-nowrap">ಕರ್ನಾಟಕ 573116</span>
-                  </>
-                ) : (
-                  <>
-                    B.M. Road, Channarayapatna, Hassan District,{" "}
-                    <span className="whitespace-nowrap">Karnataka 573116</span>
-                  </>
-                )}
-              </p>
-
-              {/* View on Map Link */}
-              <div className="pt-1">
-                <a
-                  href={VENUE_MAPS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block text-[#b8924f] hover:text-[#6B2D2A] font-sans font-semibold text-xs uppercase tracking-widest transition-colors"
+            {/* WHEN DETAILS (shows below when When button is clicked) */}
+            <AnimatePresence>
+              {whenOpen && (
+                <motion.div
+                  key="when-details"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="overflow-hidden"
                 >
-                  {t("map.view", lang)} →
-                </a>
-              </div>
-
-              {/* Preview Map Toggle Button */}
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowMapPreview((prev) => !prev)}
-                  className="group relative block w-full max-w-sm h-24 overflow-hidden rounded-xl border border-[#c9a776]/40 bg-[#EFE6D3] mx-auto md:mx-0 cursor-pointer shadow-xs"
-                >
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 opacity-40"
-                    style={{
-                      backgroundImage:
-                        "linear-gradient(rgba(140,132,114,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(140,132,114,0.15) 1px, transparent 1px)",
-                      backgroundSize: "20px 20px",
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex items-center gap-2 rounded-full bg-[#FDFBF7]/90 border border-[#c9a776]/30 px-4 py-1.5 text-xs font-sans uppercase tracking-[0.14em] text-[#6B2D2A] shadow-xs group-hover:scale-105 transition-transform">
-                      <MapPin className="w-3.5 h-3.5 text-[#b8924f]" />
-                      <span>
-                        {showMapPreview
-                          ? t("map.hide", lang)
-                          : t("map.preview", lang)}
+                  <div className="rounded-2xl border border-[#c9a776]/45 bg-[#FFFDF9] p-4 sm:p-6 space-y-4 shadow-sm text-left">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 pb-2 border-b border-[#c9a776]/25">
+                      <CalendarDays className="w-4 h-4 text-[#8a6a33]" />
+                      <span className="font-sans uppercase tracking-[0.2em] text-[11px] text-[#8a6a33] font-medium">
+                        {t("when.label", lang)} · {isKn ? "ದಿನಾಂಕ ಮತ್ತು ಸಮಯ" : "Date & Schedule"}
                       </span>
-                    </span>
-                  </div>
-                </button>
-              </div>
+                    </div>
 
-              {/* Embedded Map Panel (immediately below Preview Map button) */}
-              <AnimatePresence>
-                {showMapPreview && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.35, ease: "easeInOut" }}
-                    className="overflow-hidden mt-3 max-w-sm mx-auto md:mx-0"
-                  >
-                    <div className="rounded-2xl overflow-hidden border border-[#c9a776]/40 shadow-sm bg-[#FDFBF7]">
+                    {/* Event 1: Reception */}
+                    <div className="p-4 sm:p-5 rounded-xl bg-white/90 border border-[#c9a776]/35 text-left space-y-1.5 shadow-2xs">
+                      <div className="flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[#b8924f]" />
+                        <span className="font-sans text-[11px] uppercase tracking-wider text-[#8a6a33] font-medium">
+                          {isKn ? "ವರೋಪಚಾರ & ಆರತಕ್ಷತೆ" : "Grand Reception"}
+                        </span>
+                      </div>
+                      <p
+                        className="text-lg sm:text-xl font-medium text-[#4A1F1D] leading-snug"
+                        style={{
+                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
+                        }}
+                      >
+                        {isKn ? "2026 ನವೆಂಬರ್ 25, ಬುಧವಾರ" : "Wednesday, 25th Nov 2026"}
+                      </p>
+                      <div className="pt-1.5 border-t border-[#c9a776]/20 flex flex-col gap-0.5 text-sm">
+                        <span className="text-[#6B2D2A] font-medium">
+                          {isKn ? "ಸಂಜೆ 7:00 ಗಂಟೆಯಿಂದ" : "7:00 PM onwards"}
+                        </span>
+                        <span className="text-[#5C5248]">
+                          {isKn ? "ಶುಭಾಶಯ ಸ್ವೀಕಾರ & ಪ್ರೀತಿಯ ಭೋಜನ" : "Greetings, Welcoming & Grand Dinner"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Event 2: Shubha Muhurtha - Clean new lines on mobile, gentle elegant text without heavy bolding */}
+                    <div className="p-4 sm:p-5 rounded-xl bg-white/90 border border-[#c9a776]/45 text-left space-y-1.5 shadow-2xs">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm">💍</span>
+                        <span className="font-sans text-[11px] uppercase tracking-wider text-[#8a6a33] font-medium">
+                          {isKn ? "ಶುಭ ಮುಹೂರ್ತ (ಮಾಂಗಲ್ಯ ಧಾರಣೆ)" : "Shubha Muhurtha"}
+                        </span>
+                      </div>
+
+                      {/* Date */}
+                      <p
+                        className="text-lg sm:text-xl font-medium text-[#4A1F1D] leading-snug"
+                        style={{
+                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
+                        }}
+                      >
+                        {isKn ? "2026 ನವೆಂಬರ್ 26, ಗುರುವಾರ" : "Thursday, 26th Nov 2026"}
+                      </p>
+
+                      {/* Time Details: Coming on clean new lines on mobile without shouting bold letters */}
+                      <div className="pt-1.5 border-t border-[#c9a776]/20 flex flex-col gap-0.5 text-sm">
+                        {/* Line 1: Time */}
+                        <span className="text-base text-[#6B2D2A] font-medium">
+                          {isKn ? "ಬೆಳಗ್ಗೆ 8:45 ರಿಂದ 9:30 ರವರೆಗೆ" : "8:45 AM to 9:30 AM"}
+                        </span>
+
+                        {/* Line 2: Dhanur Lagna (on new line on mobile) */}
+                        <span className="text-[#8C531B]">
+                          {isKn ? "(ಧನುರ್ ಲಗ್ನ ಸುಮುಹೂರ್ತದಲ್ಲಿ)" : "(Dhanur Lagna)"}
+                        </span>
+
+                        {/* Line 3: Mangalya Dharana (on new line on mobile) */}
+                        <span className="text-[#4A3D36]">
+                          {isKn ? "ಮಾಂಗಲ್ಯ ಧಾರಣ ಮಹೋತ್ಸವ" : "Mangalya Dharana"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Quick Add to Calendar Action */}
+                    <div className="pt-2 flex flex-wrap gap-2">
+                      <span className="w-full text-[10px] font-sans uppercase tracking-wider text-[#8a6a33] font-medium">
+                        {isKn ? "ಕ್ಯಾಲೆಂಡರ್ಗೆ ಸೇರಿಸಿ:" : "Add to Calendar:"}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleCalendarExport("google")}
+                        className="px-3.5 py-1.5 rounded-lg border border-[#c9a776]/40 text-xs font-sans tracking-wide hover:bg-[#c9a776]/15 bg-white text-[#6B2D2A] transition-colors cursor-pointer shadow-2xs"
+                      >
+                        Google
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleCalendarExport("apple")}
+                        className="px-3.5 py-1.5 rounded-lg border border-[#c9a776]/40 text-xs font-sans tracking-wide hover:bg-[#c9a776]/15 bg-white text-[#6B2D2A] transition-colors cursor-pointer shadow-2xs"
+                      >
+                        Apple
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleCalendarExport("outlook")}
+                        className="px-3.5 py-1.5 rounded-lg border border-[#c9a776]/40 text-xs font-sans tracking-wide hover:bg-[#c9a776]/15 bg-white text-[#6B2D2A] transition-colors cursor-pointer shadow-2xs"
+                      >
+                        Outlook
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* WHERE DETAILS (shows below when Where button is clicked) */}
+            <AnimatePresence>
+              {whereOpen && (
+                <motion.div
+                  key="where-details"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.35, ease: "easeInOut" }}
+                  className="overflow-hidden"
+                >
+                  <div className="rounded-2xl border border-[#c9a776]/45 bg-[#FFFDF9] p-4 sm:p-6 space-y-4 shadow-sm text-left">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 pb-2 border-b border-[#c9a776]/25">
+                      <MapPin className="w-4 h-4 text-[#8a6a33]" />
+                      <span className="font-sans uppercase tracking-[0.2em] text-[11px] text-[#8a6a33] font-medium">
+                        {t("where.label", lang)} · {isKn ? "ಸ್ಥಳ & ವಿಳಾಸ" : "Venue & Location"}
+                      </span>
+                    </div>
+
+                    {/* Venue Name & Address */}
+                    <div className="space-y-1">
+                      <p
+                        className="text-lg sm:text-xl text-[#4A1F1D] font-medium leading-tight"
+                        style={{
+                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
+                        }}
+                      >
+                        {isKn ? VENUE_NAME_KN : VENUE_NAME}
+                      </p>
+                      <p
+                        className="text-sm text-[#4A3D36] leading-relaxed pt-0.5"
+                        style={{
+                          fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
+                        }}
+                      >
+                        {isKn ? (
+                          <>
+                            ಬಿ.ಎಂ. ರಸ್ತೆ, ಚನ್ನರಾಯಪಟ್ಟಣ, ಹಾಸನ ಜಿಲ್ಲೆ,{" "}
+                            <span className="whitespace-nowrap">ಕರ್ನಾಟಕ 573116</span>
+                          </>
+                        ) : (
+                          <>
+                            B.M. Road, Channarayapatna, Hassan District,{" "}
+                            <span className="whitespace-nowrap">Karnataka 573116</span>
+                          </>
+                        )}
+                      </p>
+                    </div>
+
+                    {/* View on Google Maps Link Button */}
+                    <div>
+                      <a
+                        href={VENUE_MAPS_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#6B2D2A] text-white hover:bg-[#853733] font-sans font-medium text-xs uppercase tracking-wider transition-colors shadow-xs"
+                      >
+                        <span>{t("map.view", lang)}</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+
+                    {/* Embedded Map Panel */}
+                    <div className="rounded-2xl overflow-hidden border border-[#c9a776]/40 shadow-xs bg-white">
                       <iframe
                         title="Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna"
                         src={VENUE_EMBED_URL}
-                        className="w-full h-64 border-0 block"
+                        className="w-full h-52 sm:h-60 border-0 block"
                         loading="lazy"
                       />
-                      <div className="p-2.5 bg-[#FDFBF7] border-t border-[#c9a776]/25 flex items-center justify-between">
-                        <span className="text-[11px] font-sans text-muted-foreground truncate mr-2">
-                          {isKn ? VENUE_NAME_KN : VENUE_NAME}
-                        </span>
-                        <a
-                          href={VENUE_MAPS_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[11px] font-sans font-semibold text-[#6B2D2A] hover:underline uppercase tracking-wider shrink-0"
-                        >
-                          {t("map.view", lang)} →
-                        </a>
-                      </div>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Right Column: Timeline & Optional Best Wishes */}

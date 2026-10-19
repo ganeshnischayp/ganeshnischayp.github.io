@@ -78,21 +78,32 @@ export function TimelineItinerary({
 
               <div className="pb-6 text-left">
                 <p
-                  className="text-lg md:text-xl text-foreground/90 font-medium leading-snug"
+                  className="text-lg md:text-xl text-[#3B1513] font-medium leading-snug"
                   style={{
                     fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
                   }}
                 >
                   {title}
                 </p>
-                <p
-                  className="text-sm text-muted-foreground italic mt-0.5"
+                <div
+                  className="text-sm text-[#2A2421] font-normal mt-1 leading-relaxed"
                   style={{
                     fontFamily: isKn ? "var(--font-kannada)" : "var(--font-body)",
                   }}
                 >
-                  {sub}
-                </p>
+                  {e.key === "muhurtha" ? (
+                    <div className="flex flex-col gap-0.5">
+                      <span className="font-medium text-[#6B2D2A]">
+                        {isKn ? "ನವೆಂಬರ್ 26, ಗುರುವಾರ · ಬೆಳಗ್ಗೆ 8:45 ರಿಂದ 9:30" : "Thursday, 26th Nov · 8:45 AM to 9:30 AM"}
+                      </span>
+                      <span className="text-xs sm:text-sm text-[#7A4B1A]">
+                        {isKn ? "ಧನುರ್ ಲಗ್ನ ಸುಮುಹೂರ್ತದಲ್ಲಿ · ಮಾಂಗಲ್ಯ ಧಾರಣ" : "(Dhanur Lagna) · Mangalya Dharana"}
+                      </span>
+                    </div>
+                  ) : (
+                    <span>{sub}</span>
+                  )}
+                </div>
               </div>
             </motion.div>
           );

@@ -74,6 +74,30 @@ export function TravelAndExplore() {
       return;
     }
 
+    if (normalized === "balehonnur" || normalized === "balehonnuru") {
+      setSuggestion({
+        city: "Balehonnur",
+        distance: 135,
+        mode: "road",
+        known: true,
+        message:
+          "From Balehonnur (~135 km): By Road (~3–3.5 hrs) via Aldur-Chikkamagaluru-Belur-Hassan or Mudigere-Hassan. By Train: Take cab/bus to Chikkamagaluru Station (50 km) or Hassan Junction (95 km) for direct train or expressway bus to Channarayapatna (CNPA).",
+      });
+      return;
+    }
+
+    if (normalized.includes("chikmag") || normalized.includes("chikkamag")) {
+      setSuggestion({
+        city: "Chikkamagaluru",
+        distance: 80,
+        mode: "road",
+        known: true,
+        message:
+          "From Chikkamagaluru (~80 km): By Road (~1.5–2 hrs) via Belur, Hassan & NH 75 Expressway (frequent buses). By Train: Direct Chikkamagaluru–Yesvantpur Express (Train 16239/16240) connects CMGR directly to Channarayapatna (CNPA) and Hassan Jn.",
+      });
+      return;
+    }
+
     const verb =
       match.mode === "train"
         ? "a scenic train ride to Channarayapatna (CNPA) or Hassan Junction 🚂"
@@ -285,6 +309,8 @@ export function TravelAndExplore() {
               {/* Quick popular city chips */}
               <div className="flex flex-wrap gap-2">
                 {[
+                  "Chikkamagaluru",
+                  "Balehonnur",
                   "Bengaluru",
                   "Mysuru",
                   "Hassan",

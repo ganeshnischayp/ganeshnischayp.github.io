@@ -1,0 +1,429 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" width="1080" height="1920">
+  <defs>
+    <!-- Vibrant Royal Mysore Twilight Sky Gradient -->
+    <linearGradient id="twilightSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c0d2b" />
+      <stop offset="18%" stop-color="#1e1245" />
+      <stop offset="35%" stop-color="#3d145c" />
+      <stop offset="52%" stop-color="#6e1966" />
+      <stop offset="68%" stop-color="#a62c5b" />
+      <stop offset="82%" stop-color="#db5539" />
+      <stop offset="92%" stop-color="#f69438" />
+      <stop offset="100%" stop-color="#ffcc66" />
+    </linearGradient>
+
+    <!-- Sunset Horizon Radiant Glow -->
+    <radialGradient id="horizonGlow" cx="50%" cy="72%" r="65%">
+      <stop offset="0%" stop-color="#ffe399" stop-opacity="0.9" />
+      <stop offset="25%" stop-color="#f59e0b" stop-opacity="0.65" />
+      <stop offset="55%" stop-color="#c026d3" stop-opacity="0.35" />
+      <stop offset="85%" stop-color="#3b0764" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#0c0d2b" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Palace Illumination Glow -->
+    <radialGradient id="palaceAmbientGlow" cx="50%" cy="68%" r="45%">
+      <stop offset="0%" stop-color="#ffea9f" stop-opacity="0.6" />
+      <stop offset="40%" stop-color="#f59e0b" stop-opacity="0.35" />
+      <stop offset="80%" stop-color="#b45309" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Palace Stone & Silhouette Gradients -->
+    <linearGradient id="palaceFacadeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2d132c" />
+      <stop offset="50%" stop-color="#1f0c22" />
+      <stop offset="100%" stop-color="#120617" />
+    </linearGradient>
+
+    <linearGradient id="domeGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fff3b0" />
+      <stop offset="30%" stop-color="#eab308" />
+      <stop offset="70%" stop-color="#ca8a04" />
+      <stop offset="100%" stop-color="#713f12" />
+    </linearGradient>
+
+    <linearGradient id="marigoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="35%" stop-color="#f59e0b" />
+      <stop offset="75%" stop-color="#d97706" />
+      <stop offset="100%" stop-color="#b45309" />
+    </linearGradient>
+
+    <linearGradient id="jasmineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="60%" stop-color="#fef9c3" />
+      <stop offset="100%" stop-color="#fde047" />
+    </linearGradient>
+
+    <linearGradient id="courtyardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#190d1f" />
+      <stop offset="30%" stop-color="#120816" />
+      <stop offset="70%" stop-color="#0c0510" />
+      <stop offset="100%" stop-color="#060208" />
+    </linearGradient>
+
+    <!-- Glow Filters for Palace Lights -->
+    <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <filter id="bulbGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Repeated Palace Arch Light Bead -->
+    <g id="lightBulb">
+      <circle cx="0" cy="0" r="2.8" fill="#ffffff" />
+      <circle cx="0" cy="0" r="6" fill="#fef08a" opacity="0.65" filter="url(#bulbGlow)" />
+    </g>
+
+    <!-- Auspicious Diya / Lamp -->
+    <g id="diyaLamp">
+      <path d="M-18,6 Q-22,-2 0,-3 Q22,-2 18,6 Q10,14 -10,14 Z" fill="#b45309" stroke="#fef08a" stroke-width="0.8" />
+      <ellipse cx="0" cy="5" rx="14" ry="4" fill="#78350f" />
+      <!-- Flame -->
+      <path d="M0,4 Q-6,-8 0,-18 Q6,-8 0,4 Z" fill="#ffedd5" filter="url(#softGlow)" />
+      <path d="M0,3 Q-3,-6 0,-13 Q3,-6 0,3 Z" fill="#f59e0b" />
+      <circle cx="0" cy="-6" r="14" fill="#fbbf24" opacity="0.45" filter="url(#softGlow)" />
+    </g>
+
+    <!-- Hanging Marigold Festoon Segment -->
+    <g id="marigoldGarland">
+      <circle cx="0" cy="0" r="11" fill="url(#marigoldGrad)" />
+      <circle cx="0" cy="0" r="7" fill="#f59e0b" />
+      <circle cx="16" cy="3" r="10" fill="url(#marigoldGrad)" />
+      <circle cx="32" cy="7" r="9" fill="url(#marigoldGrad)" />
+      <circle cx="48" cy="12" r="10" fill="url(#marigoldGrad)" />
+      <circle cx="64" cy="15" r="9" fill="url(#marigoldGrad)" />
+      <circle cx="80" cy="15" r="10" fill="url(#marigoldGrad)" />
+      <circle cx="96" cy="12" r="9" fill="url(#marigoldGrad)" />
+      <circle cx="112" cy="7" r="10" fill="url(#marigoldGrad)" />
+      <circle cx="128" cy="3" r="9" fill="url(#marigoldGrad)" />
+      <circle cx="144" cy="0" r="11" fill="url(#marigoldGrad)" />
+      <!-- Jasmine highlight accents -->
+      <circle cx="8" cy="2" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="24" cy="5" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="40" cy="10" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="56" cy="14" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="72" cy="15" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="88" cy="14" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="104" cy="10" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="120" cy="5" r="4.5" fill="url(#jasmineGrad)" />
+      <circle cx="136" cy="2" r="4.5" fill="url(#jasmineGrad)" />
+    </g>
+  </defs>
+
+  <!-- 1. VIBRANT TWILIGHT SKY BACKGROUND -->
+  <rect width="1080" height="1920" fill="url(#twilightSky)" />
+
+  <!-- 2. TWILIGHT CLOUDS & SUNSET AMBER HORIZON GLOW -->
+  <rect x="0" y="800" width="1080" height="800" fill="url(#horizonGlow)" />
+
+  <!-- Soft Sunset Cloud Bands catching magenta and peach fire -->
+  <path d="M-50,620 Q200,560 480,610 T950,570 T1150,600 L1150,720 L-50,720 Z" fill="#9333ea" opacity="0.22" />
+  <path d="M-80,700 Q250,640 580,680 T1100,650 L1100,790 L-80,790 Z" fill="#db2777" opacity="0.26" />
+  <path d="M-30,780 Q320,720 640,750 T1120,730 L1120,860 L-30,860 Z" fill="#ea580c" opacity="0.32" />
+  <path d="M-50,860 Q280,820 620,830 T1150,810 L1150,920 L-50,920 Z" fill="#f59e0b" opacity="0.4" />
+
+  <!-- 3. CELESTIAL ELEMENTS (Twilight stars & Auspicious Crescent Moon) -->
+  <g id="stars" opacity="0.85">
+    <!-- Auspicious Crescent Moon in the deep twilight indigo sky -->
+    <path d="M840,240 A36,36 0 1 0 885,295 A30,30 0 1 1 840,240 Z" fill="#fffbeb" filter="url(#softGlow)" />
+    <circle cx="858" cy="268" r="45" fill="#fef08a" opacity="0.18" filter="url(#softGlow)" />
+
+    <!-- Evening Star (Venus / Shukra) -->
+    <g transform="translate(240, 260)" filter="url(#softGlow)">
+      <polygon points="0,-14 3,-3 14,0 3,3 0,14 -3,3 -14,0 -3,-3" fill="#ffffff" />
+      <circle cx="0" cy="0" r="18" fill="#fef08a" opacity="0.45" />
+    </g>
+
+    <!-- Sparkling twilight stars across the royal sky -->
+    <circle cx="120" cy="180" r="2" fill="#fff" opacity="0.8" />
+    <circle cx="180" cy="110" r="1.5" fill="#fef08a" opacity="0.9" />
+    <circle cx="340" cy="190" r="2.2" fill="#fff" opacity="0.85" />
+    <circle cx="480" cy="130" r="1.8" fill="#fff" opacity="0.75" />
+    <circle cx="620" cy="160" r="2.5" fill="#fef08a" opacity="0.9" />
+    <circle cx="710" cy="100" r="1.5" fill="#fff" opacity="0.7" />
+    <circle cx="950" cy="170" r="2" fill="#fff" opacity="0.8" />
+    <circle cx="990" cy="320" r="1.5" fill="#fff" opacity="0.65" />
+    <circle cx="760" cy="360" r="2" fill="#fef08a" opacity="0.75" />
+    <circle cx="150" cy="380" r="1.8" fill="#fff" opacity="0.7" />
+    <circle cx="290" cy="420" r="1.5" fill="#fef08a" opacity="0.6" />
+    <circle cx="890" cy="450" r="2" fill="#fff" opacity="0.75" />
+  </g>
+
+  <!-- 4. DISTANT CHAMUNDI HILL SILHOUETTE UNDER THE TWILIGHT HORIZON -->
+  <path d="M-20,1080 Q160,980 340,990 T720,1030 T1100,970 L1100,1200 L-20,1200 Z" fill="#200a26" opacity="0.55" />
+  <!-- Distant Chamundeshwari Temple golden twilight glow on the hill peak -->
+  <circle cx="320" cy="988" r="4" fill="#fef08a" filter="url(#softGlow)" />
+  <circle cx="320" cy="988" r="16" fill="#f59e0b" opacity="0.35" filter="url(#softGlow)" />
+
+  <!-- 5. PALACE AMBIENT BACKLIGHTING -->
+  <ellipse cx="540" cy="1120" rx="460" ry="240" fill="url(#palaceAmbientGlow)" />
+
+  <!-- 6. GRAND MYSORE PALACE ILLUMINATED ARCHITECTURE (AMBA VILAS) -->
+  <!-- Layer 1: Palace Main Mass Silhouette -->
+  <g id="mysorePalaceSilhouette">
+    <!-- Center Grand Tower Base -->
+    <rect x="440" y="860" width="200" height="380" fill="url(#palaceFacadeGrad)" />
+    <!-- Center Tower Upper Tier -->
+    <rect x="470" y="740" width="140" height="120" fill="url(#palaceFacadeGrad)" />
+    <!-- Center Tower Octagonal Spire Base -->
+    <polygon points="480,740 500,660 580,660 600,740" fill="url(#palaceFacadeGrad)" />
+
+    <!-- CENTRAL ICONIC MYSORE GOLDEN DOME -->
+    <path d="M500,660 C500,560 535,530 540,505 C545,530 580,560 580,660 Z" fill="url(#domeGoldGrad)" filter="url(#softGlow)" />
+    <!-- Golden Kalasa & Flag atop the central dome -->
+    <line x1="540" y1="505" x2="540" y2="445" stroke="#fef08a" stroke-width="4" />
+    <circle cx="540" cy="475" r="6" fill="#fef08a" filter="url(#bulbGlow)" />
+    <polygon points="540,445 568,455 540,465" fill="#f59e0b" />
+
+    <!-- Left & Right Main Palace Wings -->
+    <rect x="120" y="940" width="320" height="300" fill="url(#palaceFacadeGrad)" />
+    <rect x="640" y="940" width="320" height="300" fill="url(#palaceFacadeGrad)" />
+
+    <!-- Secondary Domes (Corner Chattris) Left & Right -->
+    <!-- Far Left Chattri Tower -->
+    <rect x="130" y="860" width="70" height="180" fill="url(#palaceFacadeGrad)" />
+    <path d="M135,860 C135,800 160,780 165,760 C170,780 195,800 195,860 Z" fill="url(#domeGoldGrad)" />
+    <line x1="165" y1="760" x2="165" y2="730" stroke="#fef08a" stroke-width="2.5" />
+    <circle cx="165" cy="730" r="3.5" fill="#fef08a" />
+
+    <!-- Mid-Left Chattri -->
+    <rect x="330" y="890" width="60" height="150" fill="url(#palaceFacadeGrad)" />
+    <path d="M335,890 C335,840 357,820 360,805 C363,820 385,840 385,890 Z" fill="url(#domeGoldGrad)" />
+    <line x1="360" y1="805" x2="360" y2="780" stroke="#fef08a" stroke-width="2" />
+    <circle cx="360" cy="780" r="3" fill="#fef08a" />
+
+    <!-- Mid-Right Chattri -->
+    <rect x="690" y="890" width="60" height="150" fill="url(#palaceFacadeGrad)" />
+    <path d="M695,890 C695,840 717,820 720,805 C723,820 745,840 745,890 Z" fill="url(#domeGoldGrad)" />
+    <line x1="720" y1="805" x2="720" y2="780" stroke="#fef08a" stroke-width="2" />
+    <circle cx="720" cy="780" r="3" fill="#fef08a" />
+
+    <!-- Far Right Chattri Tower -->
+    <rect x="880" y="860" width="70" height="180" fill="url(#palaceFacadeGrad)" />
+    <path d="M885,860 C885,800 910,780 915,760 C920,780 945,800 945,860 Z" fill="url(#domeGoldGrad)" />
+    <line x1="915" y1="760" x2="915" y2="730" stroke="#fef08a" stroke-width="2.5" />
+    <circle cx="915" cy="730" r="3.5" fill="#fef08a" />
+
+    <!-- Grand Ornate Cusped Arches (Darbar Hall Arches) with Warm Glowing Interiors -->
+    <!-- Center Arches -->
+    <path d="M480,1050 C480,980 500,960 540,940 C580,960 600,980 600,1050 Z" fill="#fef08a" opacity="0.8" filter="url(#softGlow)" />
+    <path d="M495,1050 C495,995 515,975 540,960 C565,975 585,995 585,1050 Z" fill="#b45309" opacity="0.7" />
+
+    <!-- Left Arches -->
+    <path d="M160,1070 C160,1020 180,1000 205,985 C230,1000 250,1020 250,1070 Z" fill="#fef08a" opacity="0.65" />
+    <path d="M265,1070 C265,1020 285,1000 310,985 C335,1000 355,1020 355,1070 Z" fill="#fef08a" opacity="0.65" />
+    <path d="M370,1070 C370,1020 390,1000 415,985 C440,1000 460,1020 460,1070 Z" fill="#fef08a" opacity="0.65" />
+
+    <!-- Right Arches -->
+    <path d="M620,1070 C620,1020 640,1000 665,985 C690,1000 710,1020 710,1070 Z" fill="#fef08a" opacity="0.65" />
+    <path d="M725,1070 C725,1020 745,1000 770,985 C795,1000 815,1020 815,1070 Z" fill="#fef08a" opacity="0.65" />
+    <path d="M830,1070 C830,1020 850,1000 875,985 C900,1000 920,1020 920,1070 Z" fill="#fef08a" opacity="0.65" />
+
+    <!-- Second Floor Balconies / Jharokhas -->
+    <rect x="140" y="930" width="800" height="15" fill="#f59e0b" opacity="0.75" />
+    <rect x="460" y="855" width="160" height="12" fill="#f59e0b" opacity="0.9" />
+    <rect x="475" y="735" width="130" height="10" fill="#f59e0b" opacity="0.9" />
+  </g>
+
+  <!-- 7. THE LEGENDARY MYSORE PALACE ILLUMINATION BULBS (Tracing the grand architecture in brilliant golden points of light) -->
+  <g id="palaceIlluminationBulbs">
+    <!-- Center Dome Light Outline -->
+    <g filter="url(#bulbGlow)">
+      <!-- Main Dome curves -->
+      <use href="#lightBulb" x="540" y="505" />
+      <use href="#lightBulb" x="530" y="525" />
+      <use href="#lightBulb" x="550" y="525" />
+      <use href="#lightBulb" x="518" y="555" />
+      <use href="#lightBulb" x="562" y="555" />
+      <use href="#lightBulb" x="508" y="590" />
+      <use href="#lightBulb" x="572" y="590" />
+      <use href="#lightBulb" x="502" y="625" />
+      <use href="#lightBulb" x="578" y="625" />
+      <use href="#lightBulb" x="500" y="660" />
+      <use href="#lightBulb" x="580" y="660" />
+
+      <!-- Horizontal cornice lights -->
+      <use href="#lightBulb" x="480" y="740" />
+      <use href="#lightBulb" x="505" y="740" />
+      <use href="#lightBulb" x="540" y="740" />
+      <use href="#lightBulb" x="575" y="740" />
+      <use href="#lightBulb" x="600" y="740" />
+
+      <use href="#lightBulb" x="450" y="860" />
+      <use href="#lightBulb" x="480" y="860" />
+      <use href="#lightBulb" x="510" y="860" />
+      <use href="#lightBulb" x="540" y="860" />
+      <use href="#lightBulb" x="570" y="860" />
+      <use href="#lightBulb" x="600" y="860" />
+      <use href="#lightBulb" x="630" y="860" />
+
+      <!-- Long horizontal string across the full palace roofline -->
+      <use href="#lightBulb" x="130" y="940" />
+      <use href="#lightBulb" x="160" y="940" />
+      <use href="#lightBulb" x="190" y="940" />
+      <use href="#lightBulb" x="220" y="940" />
+      <use href="#lightBulb" x="250" y="940" />
+      <use href="#lightBulb" x="280" y="940" />
+      <use href="#lightBulb" x="310" y="940" />
+      <use href="#lightBulb" x="340" y="940" />
+      <use href="#lightBulb" x="370" y="940" />
+      <use href="#lightBulb" x="400" y="940" />
+      <use href="#lightBulb" x="430" y="940" />
+
+      <use href="#lightBulb" x="650" y="940" />
+      <use href="#lightBulb" x="680" y="940" />
+      <use href="#lightBulb" x="710" y="940" />
+      <use href="#lightBulb" x="740" y="940" />
+      <use href="#lightBulb" x="770" y="940" />
+      <use href="#lightBulb" x="800" y="940" />
+      <use href="#lightBulb" x="830" y="940" />
+      <use href="#lightBulb" x="860" y="940" />
+      <use href="#lightBulb" x="890" y="940" />
+      <use href="#lightBulb" x="920" y="940" />
+      <use href="#lightBulb" x="950" y="940" />
+
+      <!-- Arch lighting beads for left arches -->
+      <use href="#lightBulb" x="160" y="1065" />
+      <use href="#lightBulb" x="175" y="1030" />
+      <use href="#lightBulb" x="205" y="990" />
+      <use href="#lightBulb" x="235" y="1030" />
+      <use href="#lightBulb" x="250" y="1065" />
+
+      <use href="#lightBulb" x="265" y="1065" />
+      <use href="#lightBulb" x="280" y="1030" />
+      <use href="#lightBulb" x="310" y="990" />
+      <use href="#lightBulb" x="340" y="1030" />
+      <use href="#lightBulb" x="355" y="1065" />
+
+      <!-- Arch lighting beads for center grand arch -->
+      <use href="#lightBulb" x="480" y="1050" />
+      <use href="#lightBulb" x="495" y="1005" />
+      <use href="#lightBulb" x="520" y="960" />
+      <use href="#lightBulb" x="540" y="942" />
+      <use href="#lightBulb" x="560" y="960" />
+      <use href="#lightBulb" x="585" y="1005" />
+      <use href="#lightBulb" x="600" y="1050" />
+
+      <!-- Arch lighting beads for right arches -->
+      <use href="#lightBulb" x="725" y="1065" />
+      <use href="#lightBulb" x="740" y="1030" />
+      <use href="#lightBulb" x="770" y="990" />
+      <use href="#lightBulb" x="800" y="1030" />
+      <use href="#lightBulb" x="815" y="1065" />
+
+      <use href="#lightBulb" x="830" y="1065" />
+      <use href="#lightBulb" x="845" y="1030" />
+      <use href="#lightBulb" x="875" y="990" />
+      <use href="#lightBulb" x="905" y="1030" />
+      <use href="#lightBulb" x="920" y="1065" />
+    </g>
+  </g>
+
+  <!-- 8. ROYAL COURTYARD TERRACE & WATER REFLECTION -->
+  <rect x="0" y="1180" width="1080" height="740" fill="url(#courtyardGrad)" />
+
+  <!-- Subtle shimmering palace reflection on polished marble courtyard -->
+  <ellipse cx="540" cy="1220" rx="360" ry="18" fill="#f59e0b" opacity="0.3" filter="url(#softGlow)" />
+  <ellipse cx="540" cy="1260" rx="280" ry="12" fill="#ca8a04" opacity="0.2" filter="url(#softGlow)" />
+  <ellipse cx="540" cy="1320" rx="420" ry="24" fill="#a855f7" opacity="0.15" filter="url(#softGlow)" />
+
+  <!-- Courtyard Stone Tile Perspective Lines -->
+  <g stroke="#c9a776" stroke-width="0.8" opacity="0.15">
+    <line x1="540" y1="1200" x2="-200" y2="1920" />
+    <line x1="540" y1="1200" x2="100" y2="1920" />
+    <line x1="540" y1="1200" x2="350" y2="1920" />
+    <line x1="540" y1="1200" x2="540" y2="1920" />
+    <line x1="540" y1="1200" x2="730" y2="1920" />
+    <line x1="540" y1="1200" x2="980" y2="1920" />
+    <line x1="540" y1="1200" x2="1280" y2="1920" />
+  </g>
+
+  <!-- 9. AUSPICIOUS WEDDING DECORATION - ROYAL MARIGOLD & JASMINE FESTOONS (TORAN) -->
+  <!-- Upper Draped Wedding Garlands across the sky -->
+  <g id="upperWeddingGarlands" opacity="0.95">
+    <!-- Top Left Garland Swags -->
+    <path d="M-20,40 Q120,120 260,60" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round" />
+    <path d="M-20,40 Q120,120 260,60" fill="none" stroke="#fef08a" stroke-width="6" stroke-dasharray="14 10" />
+
+    <path d="M240,60 Q400,140 560,70" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round" />
+    <path d="M240,60 Q400,140 560,70" fill="none" stroke="#fef08a" stroke-width="6" stroke-dasharray="14 10" />
+
+    <!-- Top Right Garland Swags -->
+    <path d="M540,70 Q700,140 860,60" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round" />
+    <path d="M540,70 Q700,140 860,60" fill="none" stroke="#fef08a" stroke-width="6" stroke-dasharray="14 10" />
+
+    <path d="M840,60 Q980,120 1100,40" fill="none" stroke="#d97706" stroke-width="14" stroke-linecap="round" />
+    <path d="M840,60 Q980,120 1100,40" fill="none" stroke="#fef08a" stroke-width="6" stroke-dasharray="14 10" />
+
+    <!-- Hanging Golden Mango / Jasmine Drops with Auspicious Brass Bells -->
+    <!-- Drop 1 -->
+    <line x1="250" y1="60" x2="250" y2="170" stroke="#f59e0b" stroke-width="3" />
+    <circle cx="250" cy="80" r="7" fill="url(#marigoldGrad)" />
+    <circle cx="250" cy="102" r="6" fill="url(#jasmineGrad)" />
+    <circle cx="250" cy="122" r="7" fill="url(#marigoldGrad)" />
+    <circle cx="250" cy="144" r="6" fill="url(#jasmineGrad)" />
+    <!-- Golden Bell at tip -->
+    <path d="M242,165 Q250,155 258,165 L260,175 Q250,178 240,175 Z" fill="#fbbf24" stroke="#d97706" stroke-width="1" />
+    <circle cx="250" cy="178" r="2.5" fill="#78350f" />
+
+    <!-- Drop 2 (Center) -->
+    <line x1="550" y1="70" x2="550" y2="190" stroke="#f59e0b" stroke-width="3" />
+    <circle cx="550" cy="95" r="8" fill="url(#marigoldGrad)" />
+    <circle cx="550" cy="120" r="7" fill="url(#jasmineGrad)" />
+    <circle cx="550" cy="142" r="8" fill="url(#marigoldGrad)" />
+    <circle cx="550" cy="165" r="7" fill="url(#jasmineGrad)" />
+    <!-- Golden Bell -->
+    <path d="M541,185 Q550,175 559,185 L561,196 Q550,199 539,196 Z" fill="#fbbf24" stroke="#d97706" stroke-width="1" />
+    <circle cx="550" cy="200" r="3" fill="#78350f" />
+
+    <!-- Drop 3 -->
+    <line x1="850" y1="60" x2="850" y2="170" stroke="#f59e0b" stroke-width="3" />
+    <circle cx="850" cy="80" r="7" fill="url(#marigoldGrad)" />
+    <circle cx="850" cy="102" r="6" fill="url(#jasmineGrad)" />
+    <circle cx="850" cy="122" r="7" fill="url(#marigoldGrad)" />
+    <circle cx="850" cy="144" r="6" fill="url(#jasmineGrad)" />
+    <!-- Golden Bell -->
+    <path d="M842,165 Q850,155 858,165 L860,175 Q850,178 840,175 Z" fill="#fbbf24" stroke="#d97706" stroke-width="1" />
+    <circle cx="850" cy="178" r="2.5" fill="#78350f" />
+  </g>
+
+  <!-- 10. GLOWING FESTIVE DIYAS (LAMPS) ON THE COURTYARD FLOORS -->
+  <g id="courtyardDiyas">
+    <use href="#diyaLamp" x="120" y="1620" />
+    <use href="#diyaLamp" x="220" y="1740" />
+    <use href="#diyaLamp" x="860" y="1740" />
+    <use href="#diyaLamp" x="960" y="1620" />
+    <use href="#diyaLamp" x="60" y="1780" />
+    <use href="#diyaLamp" x="1020" y="1780" />
+  </g>
+
+  <!-- 11. FLOATING ROSE & MARIGOLD PETALS IN THE TWILIGHT BREEZE -->
+  <g id="floatingPetals" opacity="0.8">
+    <ellipse cx="140" cy="1380" rx="9" ry="5" fill="#e11d48" transform="rotate(35 140 1380)" opacity="0.75" />
+    <ellipse cx="280" cy="1460" rx="8" ry="4.5" fill="#f59e0b" transform="rotate(-25 280 1460)" opacity="0.8" />
+    <ellipse cx="200" cy="1540" rx="9" ry="5" fill="#be123c" transform="rotate(50 200 1540)" opacity="0.7" />
+    <ellipse cx="820" cy="1420" rx="9" ry="4.5" fill="#f59e0b" transform="rotate(45 820 1420)" opacity="0.85" />
+    <ellipse cx="920" cy="1500" rx="8.5" ry="5" fill="#e11d48" transform="rotate(-30 920 1500)" opacity="0.75" />
+    <ellipse cx="880" cy="1620" rx="8" ry="4" fill="#fbbf24" transform="rotate(20 880 1620)" opacity="0.8" />
+  </g>
+
+  <!-- 12. ELEGANT TWILIGHT VIGNETTE (Gentle framing keeping center vibrant and clear) -->
+  <radialGradient id="twilightVignette" cx="50%" cy="50%" r="70%">
+    <stop offset="60%" stop-color="#000000" stop-opacity="0" />
+    <stop offset="88%" stop-color="#0a0512" stop-opacity="0.4" />
+    <stop offset="100%" stop-color="#050208" stop-opacity="0.75" />
+  </radialGradient>
+  <rect width="1080" height="1920" fill="url(#twilightVignette)" pointer-events="none" />
+</svg>
