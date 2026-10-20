@@ -3,7 +3,6 @@ import {
   Train,
   Car,
   Compass,
-  MapPin,
   ExternalLink,
   ArrowRight,
   HelpCircle,
@@ -14,8 +13,6 @@ import {
   ROAD_INFO,
   KNOWN_CITIES,
   CITY_ALIASES,
-  VENUE_NAME,
-  VENUE_ADDRESS,
   VENUE_MAPS_URL,
   VENUE_EMBED_URL,
 } from "../../data/transitData";
@@ -364,34 +361,6 @@ export function TravelAndExplore() {
               )}
             </motion.div>
           )}
-        </div>
-
-        {/* Venue footer info */}
-        <div className="mt-8 pt-5 border-t border-[#c9a776]/25 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div>
-            <p className="font-sans uppercase tracking-[0.2em] text-[10px] text-[#b8924f] flex items-center gap-1 mb-0.5 font-semibold">
-              <MapPin className="w-3 h-3" />
-              The Wedding Venue
-            </p>
-            <p
-              className="text-lg text-foreground/90 font-bold"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {VENUE_NAME}
-            </p>
-            <p className="text-xs text-muted-foreground">
-              B.M. Road, Channarayapatna, Hassan District,{" "}
-              <span className="whitespace-nowrap">Karnataka 573116</span>
-            </p>
-          </div>
-          <a
-            href={VENUE_MAPS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-sans uppercase tracking-wider text-xs text-[#6B2D2A] hover:underline font-semibold"
-          >
-            Get directions →
-          </a>
         </div>
       </div>
     </div>
