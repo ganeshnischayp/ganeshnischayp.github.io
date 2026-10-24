@@ -192,8 +192,8 @@ export function InvitationCard({
             {t("invited.eyebrow", lang)}
           </p>
 
-          {/* Monogram Crest - Clean, Elegant & Crisp Golden NY Logo */}
-          <div className="flex justify-center mt-2 mb-0.5 sm:my-3.5">
+          {/* Monogram Crest - Clean, Elegant & Crisp Golden NY Logo perfectly centered */}
+          <div className="flex justify-center items-center my-3.5 sm:my-5">
             <span className="relative inline-block transition-transform duration-300 hover:scale-105">
               <Monogram
                 variant="golden"
@@ -204,7 +204,7 @@ export function InvitationCard({
           </div>
 
           {/* Couple's Names with Golden Light Effect (Active on Mobile & Desktop) */}
-          <div className="relative inline-block mt-0 mb-2 sm:my-3 max-w-full group">
+          <div className="relative inline-block mt-0 mb-2 sm:mt-0 sm:mb-3 max-w-full group">
             {/* Soft warm ambient gold aura - always active on mobile, extra bright on hover */}
             <div
               aria-hidden="true"

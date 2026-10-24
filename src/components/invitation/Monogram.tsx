@@ -1,7 +1,7 @@
 import React from "react";
 
 interface MonogramProps {
-  variant?: "framed" | "frameless" | "golden";
+  variant?: "framed" | "frameless" | "golden" | "white";
   color?: string;
   beat?: boolean;
   className?: string;
@@ -12,10 +12,10 @@ interface MonogramProps {
 
 /**
  * Authentic Nischay & Yashaswini (NY) Wedding Monogram
- * Supports the user's authentic NY-logo.png and NY-logo-golden.png files.
+ * Supports the user's authentic NY-final.png (golden) and NY-white.png (white) logo files.
  */
 export function Monogram({
-  variant = "framed",
+  variant = "golden",
   color,
   beat = false,
   className = "",
@@ -27,12 +27,18 @@ export function Monogram({
     ? import.meta.env.BASE_URL
     : `${import.meta.env.BASE_URL || ""}/`;
 
-  // Use NY-logo-golden.png if requested or if variant/color is golden
+  // Use NY-white.png if requested or if variant/color is white, otherwise use NY-final.png (golden)
+  const isWhite =
+    variant === "white" ||
+    color === "white" ||
+    color === "cream" ||
+    color === "silver";
+
   const imageSrc =
     src ||
-    (variant === "golden" || color === "gold" || color === "golden"
-      ? `${BASE}images/logo/NY-logo-golden.png`
-      : `${BASE}images/logo/NY-logo.png`);
+    (isWhite
+      ? `${BASE}images/logo/NY-white.png`
+      : `${BASE}images/logo/NY-final.png`);
 
   return (
     <span

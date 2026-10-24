@@ -175,7 +175,7 @@ export function DoorScene({
                 className="absolute inset-0 -m-3 rounded-full bg-[#c9a776]/10 blur-xl pointer-events-none"
               />
               <Monogram
-                variant="framed"
+                variant="white"
                 beat
                 bright
                 style={{ width: 84, height: 84 }}
@@ -272,7 +272,7 @@ export function DoorScene({
             }
           >
             <Monogram
-              variant="framed"
+              variant="golden"
               beat
               bright
               style={{ width: 68, height: 68 }}
