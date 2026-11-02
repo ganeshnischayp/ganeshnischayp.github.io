@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { ArrowLeft, Plus, Volume2, VolumeX } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { Analytics } from "@vercel/analytics/react";
 import {
   decodeInvite,
   encodeInvite,
@@ -450,6 +451,7 @@ export default function App() {
           {isPlaying ? "Mute Music" : "Play Music"}
         </span>
       </button>
+      <Analytics />
     </div>
   );
 }
