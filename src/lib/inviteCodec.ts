@@ -3,6 +3,8 @@
  * Format: 1 + checksum(2) + base64url(json)
  */
 
+export type BrideOption = "Annapoorna" | "Yashaswini";
+
 export interface InvitePayload {
   v: number;
   n?: string; // Invitee full name
@@ -12,10 +14,11 @@ export interface InvitePayload {
   rsvp?: number; // 1 = show RSVP button and modal
   as?: number; // 1 = auto scroll
   bw?: number; // 1 = show Best Wishes
-  gf?: number; // 1 = groom first (Nischay & Yashaswini) vs bride first
+  gf?: number; // 1 = groom first (Nischay & Annapoorna) vs bride first
   tr?: number; // 1 = auto tour
   m?: string; // Custom note / message
   h?: string; // Honorific suffix
+  b?: "a" | "y" | "annapoorna" | "yashaswini"; // Bride: default "a" (Annapoorna), or "y" (Yashaswini)
 }
 
 export type RelationType = "elder" | "family" | "friend" | "";
@@ -34,9 +37,38 @@ export const NUM_TO_REL: Record<number, RelationType> = {
   3: "friend",
 };
 
-export const KANNADA_NAMES = "ನಿಶ್ಚಯ್ & ಯಶಸ್ವಿನಿ";
-export const KANNADA_NAMES_BRIDE_FIRST = "ಯಶಸ್ವಿನಿ & ನಿಶ್ಚಯ್";
+// Default Bride is Annapoorna everywhere in the website
+export const KANNADA_NAMES = "ನಿಶ್ಚಯ್ & ಅನ್ನಪೂರ್ಣ";
+export const KANNADA_NAMES_BRIDE_FIRST = "ಅನ್ನಪೂರ್ಣ & ನಿಶ್ಚಯ್";
+export const KANNADA_NAMES_YASHASWINI = "ನಿಶ್ಚಯ್ & ಯಶಸ್ವಿನಿ";
+export const KANNADA_NAMES_YASHASWINI_BRIDE_FIRST = "ಯಶಸ್ವಿನಿ & ನಿಶ್ಚಯ್";
 export const KANNADA_WELCOME = "ಹೃತ್ಪೂರ್ವಕ ಸ್ವಾಗತ";
+
+export function getBrideNames(bride: BrideOption = "Annapoorna") {
+  if (bride === "Yashaswini") {
+    return {
+      en: "Yashaswini",
+      kn: "ಯಶಸ್ವಿನಿ",
+    };
+  }
+  return {
+    en: "Annapoorna",
+    kn: "ಅನ್ನಪೂರ್ಣ",
+  };
+}
+
+export function getCoupleNames(
+  bride: BrideOption = "Annapoorna",
+  groomFirst = false,
+  lang: "en" | "kn" | "te" = "en"
+) {
+  const isKn = lang === "kn" || lang === "te";
+  const { en, kn } = getBrideNames(bride);
+  if (isKn) {
+    return groomFirst ? `ನಿಶ್ಚಯ್ & ${kn}` : `${kn} & ನಿಶ್ಚಯ್`;
+  }
+  return groomFirst ? `Nischay & ${en}` : `${en} & Nischay`;
+}
 
 // Retain alias references for backward-compatibility if imported
 export const TELUGU_NAMES = KANNADA_NAMES;
@@ -67,6 +99,7 @@ export function encodeInvite(params: {
   autoTour?: boolean;
   note?: string;
   honorific?: string;
+  bride?: BrideOption;
 }): string {
   const payload: InvitePayload = { v: 1 };
   if (params.name && params.name.trim()) {
@@ -89,6 +122,11 @@ export function encodeInvite(params: {
   }
   if (params.honorific && params.honorific.trim()) {
     payload.h = params.honorific.trim().slice(0, 16);
+  }
+  if (params.bride === "Yashaswini") {
+    payload.b = "y";
+  } else if (params.bride === "Annapoorna") {
+    payload.b = "a";
   }
 
   const jsonStr = JSON.stringify(payload);
@@ -141,6 +179,8 @@ export function decodeInvite(token: string): InvitePayload {
     if (typeof raw.tr === "number") result.tr = raw.tr;
     if (typeof raw.m === "string") result.m = raw.m.slice(0, 140);
     if (typeof raw.h === "string") result.h = raw.h.slice(0, 16);
+    if (raw.b === "y" || raw.b === "yashaswini") result.b = "y";
+    else if (raw.b === "a" || raw.b === "annapoorna") result.b = "a";
 
     return result;
   } catch (err) {

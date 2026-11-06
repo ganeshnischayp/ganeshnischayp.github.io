@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { X, Copy, Check, Share2, Sparkles, ExternalLink, Heart, CheckCircle2 } from "lucide-react";
-import { encodeInvite, encodeBase64Name, RelationType } from "../../lib/inviteCodec";
+import { encodeInvite, encodeBase64Name, RelationType, BrideOption } from "../../lib/inviteCodec";
 
 interface InviteGeneratorModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialShowRsvp?: boolean;
   onShowRsvpChange?: (val: boolean) => void;
+  initialBride?: BrideOption;
+  onBrideChange?: (val: BrideOption) => void;
 }
 
 export function InviteGeneratorModal({
@@ -14,8 +16,11 @@ export function InviteGeneratorModal({
   onClose,
   initialShowRsvp = true,
   onShowRsvpChange,
+  initialBride = "Annapoorna",
+  onBrideChange,
 }: InviteGeneratorModalProps) {
   const [name, setName] = useState("");
+  const [bride, setBride] = useState<BrideOption>(initialBride);
   const [rel, setRel] = useState<RelationType>("friend");
   const [lang, setLang] = useState<"kn" | "en">("en");
   const [showCelebration, setShowCelebration] = useState(true);
@@ -28,14 +33,20 @@ export function InviteGeneratorModal({
   useEffect(() => {
     if (isOpen) {
       setShowRsvp(initialShowRsvp);
+      if (initialBride) setBride(initialBride);
     }
-  }, [isOpen, initialShowRsvp]);
+  }, [isOpen, initialShowRsvp, initialBride]);
 
   if (!isOpen) return null;
 
   const handleToggleShowRsvp = (checked: boolean) => {
     setShowRsvp(checked);
     onShowRsvpChange?.(checked);
+  };
+
+  const handleSelectBride = (selected: BrideOption) => {
+    setBride(selected);
+    onBrideChange?.(selected);
   };
 
   const b64Name = name.trim() ? encodeBase64Name(name.trim()) : "";
@@ -50,10 +61,12 @@ export function InviteGeneratorModal({
   })();
 
   // Construct short, clean URL:
+  // - Bride name: by default Annapoorna (no param needed). If Yashaswini, add bride=yashaswini
   // - Bride First is permanent default (no gf query param needed)
   // - Default RSVP On: query param is omitted
   // - RSVP Off unchecked: rsvp=0
   const queryParts: string[] = [];
+  if (bride === "Yashaswini") queryParts.push("bride=yashaswini");
   if (!showRsvp) queryParts.push("rsvp=0");
   if (lang === "kn") queryParts.push("l=kn");
   if (rel && rel !== "friend") queryParts.push(`rel=${rel}`);
@@ -74,7 +87,7 @@ export function InviteGeneratorModal({
   };
 
   const shareOnWhatsApp = () => {
-    const couple = "Yashaswini & Nischay";
+    const couple = bride === "Yashaswini" ? "Yashaswini & Nischay" : "Annapoorna & Nischay";
     const text = `You're warmly invited to celebrate the wedding of ${couple}!\n\n📅 Reception: 25th Nov 2026 (7:00 PM)\n💍 Muhurtha: 26th Nov 2026 (8:45 AM - 9:30 AM)\n📍 Savithramma Kariyappa Gowda Kalyana Mantapa, Channarayapatna\n\nOpen your personal invitation: ${fullUrl}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
   };
@@ -117,6 +130,47 @@ export function InviteGeneratorModal({
               onChange={(e) => setName(e.target.value)}
               className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#c9a776]/40 bg-[#FDFBF7] focus:outline-none focus:ring-2 focus:ring-[#c9a776]"
             />
+          </div>
+
+          {/* Bride Name Selection: Annapoorna (Default) or Yashaswini */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs uppercase tracking-wider text-muted-foreground font-sans font-semibold">
+                Bride Name
+              </label>
+              <span className="text-[10px] text-[#8a6a33] font-sans font-medium">
+                {bride === "Annapoorna" ? "Default: Annapoorna" : "Selected: Yashaswini"}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl border border-[#c9a776]/35 bg-[#FDFBF7]">
+              <button
+                type="button"
+                onClick={() => handleSelectBride("Annapoorna")}
+                className={`py-2 px-3 text-xs rounded-lg cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                  bride === "Annapoorna"
+                    ? "bg-[#6B2D2A] text-white font-semibold shadow-xs"
+                    : "text-muted-foreground hover:text-[#6B2D2A] hover:bg-black/5"
+                }`}
+              >
+                <span>Annapoorna</span>
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                  bride === "Annapoorna" ? "bg-white/20 text-white" : "bg-[#c9a776]/20 text-[#8a6a33]"
+                }`}>
+                  Default
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSelectBride("Yashaswini")}
+                className={`py-2 px-3 text-xs rounded-lg cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                  bride === "Yashaswini"
+                    ? "bg-[#6B2D2A] text-white font-semibold shadow-xs"
+                    : "text-muted-foreground hover:text-[#6B2D2A] hover:bg-black/5"
+                }`}
+              >
+                <span>Yashaswini</span>
+              </button>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -246,7 +300,7 @@ export function InviteGeneratorModal({
                 Personalized Link
               </label>
               <span className="text-[11px] font-mono text-[#6B2D2A] bg-[#c9a776]/15 px-2 py-0.5 rounded">
-                Bride First • {showRsvp ? "RSVP On" : "RSVP Off"}
+                Bride: {bride} • {showRsvp ? "RSVP On" : "RSVP Off"}
               </span>
             </div>
 

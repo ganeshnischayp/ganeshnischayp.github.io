@@ -3,6 +3,7 @@ import { X, Heart, Plus, Minus, Send, CheckCircle2, MessageCircle } from "lucide
 import { motion, AnimatePresence } from "motion/react";
 import confetti from "canvas-confetti";
 import { t } from "../../data/i18n";
+import { BrideOption, getBrideNames } from "../../lib/inviteCodec";
 
 interface Companion {
   id: string;
@@ -18,6 +19,7 @@ interface RsvpModalProps {
   guestName?: string;
   guestToken?: string;
   rel?: string;
+  brideName?: BrideOption;
 }
 
 const WHATSAPP_NUMBER = "918660019207";
@@ -30,7 +32,11 @@ export function RsvpModal({
   lang = "en",
   guestName = "",
   guestToken = "",
+  brideName = "Annapoorna",
 }: RsvpModalProps) {
+  const { en: brideEn, kn: brideKn } = getBrideNames(brideName);
+  const coupleEn = `${brideEn} & Nischay`;
+  const coupleKn = `${brideKn} & ನಿಶ್ಚಯ್`;
   const [name, setName] = useState(guestName);
   const [phone, setPhone] = useState("");
   const [side, setSide] = useState<"both" | "bride" | "groom">("both");
@@ -127,11 +133,11 @@ export function RsvpModal({
       side === "both"
         ? "Both Groom & Bride"
         : side === "bride"
-        ? "Bride's Side (Yashaswini)"
+        ? `Bride's Side (${brideEn})`
         : "Groom's Side (Nischay)";
 
     const msgLines = [
-      "🌸 *Wedding RSVP — Nischay & Yashaswini* 🌸",
+      `🌸 *Wedding RSVP — ${coupleEn}* 🌸`,
       "",
       `*Name:* ${name.trim()}`,
       `*Phone:* ${phone.trim()}`,
@@ -360,7 +366,13 @@ export function RsvpModal({
               <div className="grid grid-cols-3 gap-2">
                 {[
                   { id: "both" as const, label: t("rsvp.side.both", lang) },
-                  { id: "bride" as const, label: t("rsvp.side.bride", lang) },
+                  {
+                    id: "bride" as const,
+                    label: t("rsvp.side.bride", lang, {
+                      bride: brideEn,
+                      brideKn: brideKn,
+                    }),
+                  },
                   { id: "groom" as const, label: t("rsvp.side.groom", lang) },
                 ].map((s) => (
                   <button
@@ -498,7 +510,10 @@ export function RsvpModal({
                 onChange={(e) => setNote(e.target.value)}
                 placeholder={
                   attending
-                    ? t("rsvp.note.ph.yes", lang)
+                    ? t("rsvp.note.ph.yes", lang, {
+                        couple: coupleEn,
+                        coupleKn: coupleKn,
+                      })
                     : t("rsvp.note.ph.no", lang)
                 }
                 className="w-full px-3.5 py-2 text-sm rounded-xl border border-[#c9a776]/40 bg-[#FDFBF7] focus:outline-none focus:border-[#6B2D2A] font-serif"

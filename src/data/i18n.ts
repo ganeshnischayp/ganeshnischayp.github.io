@@ -13,7 +13,10 @@ export const TRANSLATIONS: {
     "verse.text": "Two souls, two hearts, joined together in sacred love and harmony.",
     "verse.ref": "Sacred Union",
     "invited.eyebrow": "You are cordially invited",
-    "hero.families": "Together with their families, invite you to celebrate the wedding ceremony of Nischay & Yashaswini.",
+    "hero.families": (e?: { couple?: string }) =>
+      `Together with their families, invite you to celebrate the wedding ceremony of ${
+        e?.couple || "Annapoorna & Nischay"
+      }.`,
     "hero.note": "Everyone is welcome — come just as you are and celebrate with us.",
     welcome: "A heartfelt welcome",
     countdown: (e: { n: number }) => `${e.n} ${1 === Number(e.n) ? "day" : "days"} until the celebration`,
@@ -73,7 +76,7 @@ export const TRANSLATIONS: {
     "rsvp.phone.ph": "So we can reach you",
     "rsvp.side.label": "Here for",
     "rsvp.side.both": "Both",
-    "rsvp.side.bride": "Bride (Yashaswini)",
+    "rsvp.side.bride": (e?: { bride?: string }) => `Bride (${e?.bride || "Annapoorna"})`,
     "rsvp.side.groom": "Groom (Nischay)",
     "rsvp.attend.legend": "Will you be there?",
     "rsvp.attend.yes": "Joyfully accepts",
@@ -102,7 +105,8 @@ export const TRANSLATIONS: {
     "rsvp.rel.relative": "Relative",
     "rsvp.rel.other": "Other",
     "rsvp.note.label": "A blessing to the couple (optional)",
-    "rsvp.note.ph.yes": "Blessings, wishes, or notes for Nischay & Yashaswini…",
+    "rsvp.note.ph.yes": (e?: { couple?: string }) =>
+      `Blessings, wishes, or notes for ${e?.couple || "Annapoorna & Nischay"}…`,
     "rsvp.note.ph.no": "We'll miss you — send your blessings to the couple…",
     "rsvp.btn.next": "Next",
     "rsvp.btn.back": "Back",
@@ -126,7 +130,10 @@ export const TRANSLATIONS: {
     "verse.text": "ಮಾಂಗಲ್ಯಂ ತಂತುನಾನೇನ ಮಮ ಜೀವನ ಹೇತುನಾ | ಕಂಠೇ ಬಧ್ನಾಮಿ ಶುಭಗೇ ತ್ವಂ ಜೀವ ಶರದಃ ಶತಮ್ ||",
     "verse.ref": "ಮಂಗಳ ಶ್ಲೋಕ",
     "invited.eyebrow": "ವಿವಾಹ ಮಹೋತ್ಸವದ ಆದರದ ಆಮಂತ್ರಣ",
-    "hero.families": "ಇರು ಕುಟುಂಬದ ಹಿರಿಯರ ಮತ್ತು ಬಂಧು-ಮಿತ್ರರ ಆಶೀರ್ವಾದದೊಂದಿಗೆ, ನಿಶ್ಚಯ್ ಮತ್ತು ಯಶಸ್ವಿನಿ ಅವರ ವಿವಾಹ ಮಹೋತ್ಸವಕ್ಕೆ ತಮ್ಮನ್ನು ಸಕುಟುಂಬ ಸಮೇತ ಆತ್ಮೀಯವಾಗಿ ಆಹ್ವಾನಿಸುತ್ತಿದ್ದೇವೆ.",
+    "hero.families": (e?: { coupleKn?: string }) =>
+      `ಇರು ಕುಟುಂಬದ ಹಿರಿಯರ ಮತ್ತು ಬಂಧು-ಮಿತ್ರರ ಆಶೀರ್ವಾದದೊಂದಿಗೆ, ${
+        e?.coupleKn || "ಅನ್ನಪೂರ್ಣ ಮತ್ತು ನಿಶ್ಚಯ್"
+      } ಅವರ ವಿವಾಹ ಮಹೋತ್ಸವಕ್ಕೆ ತಮ್ಮನ್ನು ಸಕುಟುಂಬ ಸಮೇತ ಆತ್ಮೀಯವಾಗಿ ಆಹ್ವಾನಿಸುತ್ತಿದ್ದೇವೆ.`,
     "hero.note": "ತಮ್ಮ ಆಗಮನವೇ ನಮಗೆ ಸಡಗರ — ಬಂದು ನವಜೋಡಿಯನ್ನು ಹರಸಿ ಆಶೀರ್ವದಿಸಿ.",
     welcome: "ಹೃತ್ಪೂರ್ವಕ ಸ್ವಾಗತ",
     countdown: (e: { n: number }) => `ಶುಭ ಮುಹೂರ್ತಕ್ಕೆ ಇನ್ನು ${e.n} ದಿನಗಳು ಬಾಕಿ`,
@@ -186,7 +193,7 @@ export const TRANSLATIONS: {
     "rsvp.phone.ph": "ಸಂಪರ್ಕ ಸಂಖ್ಯೆ",
     "rsvp.side.label": "ಯಾರ ಕಡೆಯವರು?",
     "rsvp.side.both": "ಇಬ್ಬರ ಕಡೆಯವರು",
-    "rsvp.side.bride": "ವಧು (ಯಶಸ್ವಿನಿ)",
+    "rsvp.side.bride": (e?: { brideKn?: string }) => `ವಧು (${e?.brideKn || "ಅನ್ನಪೂರ್ಣ"})`,
     "rsvp.side.groom": "ವರ (ನಿಶ್ಚಯ್)",
     "rsvp.attend.legend": "ತಾವು ಭಾಗವಹಿಸುತ್ತೀರಾ?",
     "rsvp.attend.yes": "ಖಂಡಿತ ಸಂತೋಷದಿಂದ ಬರುತ್ತೇವೆ",
@@ -215,7 +222,8 @@ export const TRANSLATIONS: {
     "rsvp.rel.relative": "ಬಂಧುಗಳು",
     "rsvp.rel.other": "ಇತರರು",
     "rsvp.note.label": "ನವಜೋಡಿಗೆ ಹಾರೈಕೆ / ಸಂದೇಶ (ಐಚ್ಛಿಕ)",
-    "rsvp.note.ph.yes": "ನಿಶ್ಚಯ್ ಮತ್ತು ಯಶಸ್ವಿನಿ ಅವರಿಗೆ ತಮ್ಮ ಪ್ರೀತಿಯ ಹಾರೈಕೆಗಳು…",
+    "rsvp.note.ph.yes": (e?: { coupleKn?: string }) =>
+      `${e?.coupleKn || "ಅನ್ನಪೂರ್ಣ ಮತ್ತು ನಿಶ್ಚಯ್"} ಅವರಿಗೆ ತಮ್ಮ ಪ್ರೀತಿಯ ಹಾರೈಕೆಗಳು…`,
     "rsvp.note.ph.no": "ತಮ್ಮ ಉಪಸ್ಥಿತಿಯನ್ನು ಮಿಸ್ ಮಾಡಿಕೊಳ್ಳುತ್ತೇವೆ — ಹಾರೈಕೆ ತಿಳಿಸಿ…",
     "rsvp.btn.next": "ಮುಂದೆ",
     "rsvp.btn.back": "ಹಿಂದೆ",

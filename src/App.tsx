@@ -8,6 +8,7 @@ import {
   RelationType,
   getInviteeNameFromUrl,
   encodeBase64Name,
+  BrideOption,
 } from "./lib/inviteCodec";
 import { DoorScene } from "./components/invitation/DoorScene";
 import { InvitationCard } from "./components/invitation/InvitationCard";
@@ -16,14 +17,15 @@ import { InviteGeneratorModal } from "./components/generator/InviteGeneratorModa
 import { triggerWeddingArrivalConfetti } from "./lib/confetti";
 import { t } from "./data/i18n";
 
-// Default token for Nischay & Yashaswini wedding
+// Default token for Annapoorna & Nischay wedding (Annapoorna by default)
 const DEFAULT_PARAM = encodeInvite({
   name: "Beloved Family & Friends",
   rel: "friend",
   lang: "en",
   showCelebration: true,
   showRsvp: true,
-  groomFirst: false, // Default is Bride first: Yashaswini & Nischay
+  groomFirst: false, // Default is Bride first: Annapoorna & Nischay
+  bride: "Annapoorna",
 });
 
 export default function App() {
@@ -97,12 +99,28 @@ export default function App() {
     return sp.get("msg") || sp.get("note") || sp.get("m");
   }, [rawToken, urlParamsVersion]);
 
+  const urlQueryBride = useMemo<BrideOption | null>(() => {
+    if (typeof window === "undefined") return null;
+    const sp = new URLSearchParams(window.location.search);
+    const b = (sp.get("bride") || sp.get("b") || "").toLowerCase();
+    if (b === "yashaswini" || b === "yashu" || b === "y") return "Yashaswini";
+    if (b === "annapoorna" || b === "annu" || b === "a") return "Annapoorna";
+    return null;
+  }, [rawToken, urlParamsVersion]);
+
+  const initialBride: BrideOption =
+    urlQueryBride !== null
+      ? urlQueryBride
+      : (invite.b === "y" || invite.b === "yashaswini" ? "Yashaswini" : "Annapoorna");
+
   const initialShowRsvp = urlQueryRsvp !== null ? urlQueryRsvp : (invite.rsvp !== undefined ? invite.rsvp === 1 : true);
 
-  // Live override when RSVP is toggled in generator modal
+  // Live override when bride or RSVP is toggled in generator modal
   const [liveShowRsvp, setLiveShowRsvp] = useState<boolean | null>(null);
+  const [liveBride, setLiveBride] = useState<BrideOption | null>(null);
+  const brideName: BrideOption = liveBride !== null ? liveBride : initialBride;
 
-  // Bride name is always first by default: Yashaswini & Nischay
+  // Bride name is always first by default: Annapoorna & Nischay
   const groomFirst = false;
 
   // Invitee name: path param encoded in base64 takes highest precedence!
@@ -114,18 +132,22 @@ export default function App() {
   const note = urlMsg || invite.m || "";
   const honorific = invite.h || "";
 
-  // Only show the top nav bar if the invitee name is NishuYashu
+  // Only show the top nav bar if the invitee name has admin credentials
   const isPrivilegedAdmin = useMemo(() => {
     const normalize = (val?: string | null) =>
       (val || "").toLowerCase().replace(/[^a-z0-9]/g, "");
-    const target = "nishuyashu";
-    if (normalize(guestName).includes(target)) return true;
-    if (normalize(invite?.n).includes(target)) return true;
-    if (normalize(pathInvitee).includes(target)) return true;
+    const targets = ["nishuyashu", "nishuannu", "annunishu", "yashunishu"];
+    const matches = (s?: string | null) => {
+      const n = normalize(s);
+      return targets.some((t) => n.includes(t));
+    };
+    if (matches(guestName)) return true;
+    if (matches(invite?.n)) return true;
+    if (matches(pathInvitee)) return true;
     if (typeof window !== "undefined") {
       const path = normalize(window.location.pathname);
       const search = normalize(window.location.search);
-      if (path.includes(target) || search.includes(target)) return true;
+      if (targets.some((t) => path.includes(t) || search.includes(t))) return true;
     }
     return false;
   }, [guestName, invite?.n, pathInvitee]);
@@ -391,6 +413,7 @@ export default function App() {
                 showCelebration={showCelebration}
                 groomFirst={groomFirst}
                 showBestWishes={showBestWishes}
+                brideName={brideName}
                 onToggleLang={toggleLang}
                 onOpenRsvp={() => setIsRsvpOpen(true)}
                 showRsvp={showRsvp}
@@ -409,6 +432,7 @@ export default function App() {
         guestName={guestName}
         guestToken={rawToken}
         rel={rel}
+        brideName={brideName}
       />
 
       {/* CUSTOM INVITATION LINK GENERATOR MODAL */}
@@ -417,6 +441,8 @@ export default function App() {
         onClose={() => setIsGeneratorOpen(false)}
         initialShowRsvp={showRsvp}
         onShowRsvpChange={(val) => setLiveShowRsvp(val)}
+        initialBride={brideName}
+        onBrideChange={(val) => setLiveBride(val)}
       />
 
       {/* BACKGROUND MUSIC (romantic-vows.mp3) */}

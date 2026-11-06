@@ -21,6 +21,8 @@ import {
   KANNADA_NAMES_BRIDE_FIRST,
   KANNADA_WELCOME,
   RelationType,
+  BrideOption,
+  getBrideNames,
 } from "../../lib/inviteCodec";
 import {
   VENUE_NAME,
@@ -41,6 +43,7 @@ interface InvitationCardProps {
   showCelebration: boolean;
   groomFirst: boolean;
   showBestWishes: boolean;
+  brideName?: BrideOption;
   onToggleLang: () => void;
   onOpenRsvp: () => void;
   showRsvp: boolean;
@@ -58,6 +61,7 @@ export function InvitationCard({
   note = "",
   honorific = "",
   lang,
+  brideName = "Annapoorna",
   groomFirst = false,
   showBestWishes,
   onToggleLang,
@@ -78,8 +82,9 @@ export function InvitationCard({
     Math.ceil((targetDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24))
   );
 
-  const coupleEn = groomFirst ? "Nischay & Yashaswini" : "Yashaswini & Nischay";
-  const coupleKn = groomFirst ? KANNADA_NAMES : KANNADA_NAMES_BRIDE_FIRST;
+  const { en: brideEn, kn: brideKn } = getBrideNames(brideName);
+  const coupleEn = groomFirst ? `Nischay & ${brideEn}` : `${brideEn} & Nischay`;
+  const coupleKn = groomFirst ? `ನಿಶ್ಚಯ್ & ${brideKn}` : `${brideKn} & ನಿಶ್ಚಯ್`;
 
   const handleCalendarExport = (type: "google" | "apple" | "outlook") => {
     const title = `Wedding of ${coupleEn}`;
@@ -110,7 +115,7 @@ export function InvitationCard({
       const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
-      link.download = `nischay-yashaswini-wedding.ics`;
+      link.download = `wedding-${brideEn.toLowerCase()}-nischay.ics`;
       link.click();
     }
   };
@@ -265,7 +270,7 @@ export function InvitationCard({
               fontFamily: isKn ? "var(--font-kannada)" : "var(--font-serif)",
             }}
           >
-            {t("hero.families", lang)}
+            {t("hero.families", lang, { couple: coupleEn, coupleKn: coupleKn })}
           </p>
 
           {/* Personalized Greeting for Invitee */}
